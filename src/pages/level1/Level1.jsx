@@ -21,7 +21,7 @@ import useMovements from "../../utils/key-movements";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import HealthBar from '../../components/HealthBar';
 import RewardSpawner from "./characters/rewards/RewardSpawner";
-import { ObjectCheckpoint } from "./characters/objectCheckpoint/ObjectCheckpoint";
+
 
 export default function Level1() {
     const map = useMovements();
@@ -162,7 +162,6 @@ const toggleInstructions = () => {
                 <Ecctrl
                   position={[0, 10, 0]}
                 >
-                  <ObjectCheckpoint />
                 </Ecctrl>
               </Physics>
               <WelcomeText position={[0, 1, -2]} />

@@ -1,23 +1,11 @@
 import "./stylesLogin.css";
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../../context/AuthContext";
-
-
-
 export default function Login() {
 
     const navigate = useNavigate();
-     const auth = useAuth();
 
-
-    const onHandleButtonStart = async () => {
-       
-        await auth.loginWithGoogle().then((res)=>{
-            navigate('/level1')
-        }).catch((error)=>{
-            console.log(error)
-        });
-
+    const onHandleButtonStart = () => {
+        navigate('/level1');
     };
 
     return (
