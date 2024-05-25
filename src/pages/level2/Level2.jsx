@@ -81,7 +81,7 @@ export default function Level2() {
             {lampPositions.map((position, index) => (
               <Lamp key={index} position={position} />
             ))}
-            <Dragon position={[0, 0, 0]} />
+            <Dragon position={[-14, -1, 0]} />
           </Suspense>
         </Canvas>
         <Loader />
