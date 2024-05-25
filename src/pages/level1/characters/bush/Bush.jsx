@@ -6,9 +6,14 @@ export default function Bush(props) {
   const { nodes, materials } = useGLTF('/assets/models/bush/Arbusto.glb');
   const meshRef = useRef();
 
+  useEffect(() => {
+    const mesh = meshRef.current;
+    mesh.userData.tag = "bush"; // Asignar una etiqueta para identificar el arbusto en las colisiones
+  }, []);
+
   return (
     <group {...props} dispose={null} position={[3, 0.3, 0]}>
-      <RigidBody type="fixed" name='Bush'>
+      <RigidBody type="fixed"> {/* Mantenemos el tipo como "static" para que el arbusto permanezca estático */}
         <mesh
           ref={meshRef}
           castShadow

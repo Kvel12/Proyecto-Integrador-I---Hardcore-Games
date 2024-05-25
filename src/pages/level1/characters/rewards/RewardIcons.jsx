@@ -1,18 +1,14 @@
-import React, { Component } from "react";
-import { Coin } from "./coinOrigin";
-import { crystal } from "./crystal";
-import { gem } from "./gem";
-import { lifePotion } from "./lifePotion";
-import { ruby_heart_gem } from "./ruby_heart_gem";
-import { Start } from "./star";
+import React from "react";
 
 const RewardIcons = [
-  {component: Coin, name: "coin" },
-  {component: crystal, name: "crystal"},
-  {component: gem, name: "gem"},
-  {component:lifePotion, name:"lifePotion"},
-  {component: ruby_heart_gem, name: "rubyHeart"},
-  {component: Start, name: "Start"},
+  { src: "/assets/images/bolsaDinero.jpg", name: "bolsaDinero" },
+  { src: "/assets/images/copoNieve.jpg", name: "copoNieve" },
+  { src: "/assets/images/diamante.jpg", name: "diamante" },
+  { src: "/assets/images/estrella.jpg", name: "estrella" },
+  { src: "/assets/images/flor.jpg", name: "flor" },
+  { src: "/assets/images/luces.jpg", name: "luces" },
+  { src: "/assets/images/trebol.jpg", name: "trebol" },
+  
 ];
 
 export default RewardIcons;
