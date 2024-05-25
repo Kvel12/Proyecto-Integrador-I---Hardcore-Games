@@ -30,37 +30,21 @@ import Logout from "../../components/logout/logout";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Level1() {
-  const map = useMovements();
-  const audioRef = useRef(
-    new Audio("./assets/sounds/BosqueEncantadoAudio.mp3")
-  );
-  const [userInteracted, setUserInteracted] = useState(false);
-  const [volume, setVolume] = useState(0.5); // Estado para almacenar el volumen del juego, valor inicial al 50%
-  const [lives, setLives] = useState(3); // Número de vidas del personaje
-  const maxLives = 5; // Número máximo de vidas
+    const map = useMovements();
+    const audioRef = useRef(new Audio("./assets/sounds/BosqueEncantadoAudio.mp3"));
+    const [userInteracted, setUserInteracted] = useState(false);
+    const [volume, setVolume] = useState(0.5); // Estado para almacenar el volumen del juego, valor inicial al 50%
+    const [lives, setLives] = useState(3); // Número de vidas del personaje
+    const maxLives = 5; // Número máximo de vidas
+    const foxBodyRef = useRef();
 
-  const [collectItems, setCollectedItems] = useState([]);
 
-  const auth = useAuth();
-  const [ValuesUser, setValuesUser] = useState(null);
-
-  useEffect(() => {
-    if (auth.user) {
-      const { displayName, email } = auth.user;
-
-      setValuesUser({
-        displayName: displayName,
-        email: email,
-      });
-    }
-  }, [auth.user]);
-
-  const handleCollect = (item) => {
-    setCollectedItems((prevItems) => [...prevItems, item]);
-  };
-
-  /**para la introducción del juego */
-  const [showInstructions, setShowInstructions] = useState(false);
+    const handleCollect = (item) => {
+      console.log(`Collected ${item.name}`);
+    };
+  
+/**para l introduccion del juego */
+const [showInstructions, setShowInstructions] = useState(false);
 
   const toggleInstructions = () => {
     setShowInstructions(!showInstructions);
@@ -108,27 +92,27 @@ export default function Level1() {
     auth.logout();
   };
 
-  return (
-    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-      <RewardSpawner onCollect={handleCollect} />
-      <KeyboardControls map={map}>
-        <div>
-          <HealthBar lives={lives} maxLives={maxLives} />
-        </div>
-        <div>
-          {/* Botón para reducir las vidas del personaje (solo para demostración) */}
-          <button
-            onClick={decreaseLives}
-            style={{
-              position: "absolute",
-              top: "20px",
-              right: "300px",
-              zIndex: "9999",
-            }}
-          >
-            Reducir Vidas
-          </button>
-          {/* Botón para mostrar las instrucciones */}
+    return (
+      <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+        <KeyboardControls map={map}>
+          <div>
+            <HealthBar lives={lives} maxLives={maxLives} />
+          </div>
+          <div>
+            {/* Botón para reducir las vidas del personaje (solo para demostración) */}
+            <button
+              onClick={decreaseLives}
+              style={{
+                position: "absolute",
+                top: "20px",
+                right: "300px",
+                zIndex: "9999",
+              }}
+            >
+              Reducir Vidas
+            </button>
+          </div>
+
           <button
             onClick={toggleInstructions}
             style={{
@@ -163,38 +147,45 @@ export default function Level1() {
           </div>
         )}
 
-        <Canvas
-          camera={{
-            position: [0, 1, 0],
-          }}
-        >
-          <Perf position="top-left" />
-          <Suspense fallback={null}>
-            <Lights />
-            <Environments />
-            <Sparkles
-              color="white"
-              count={150}
-              size={10}
-              fade={false}
-              speed={4}
-              scale={20}
-            />
-            <Physics debug={false}>
-              <World4 />
-              <Bush />
-              <ContactShadows scale={[16, 16]} opacity={(0, 42)} />
-              <Ecctrl
-                camInitDis={-3}
-                camMaxDis={-3}
-                maxVelLimit={5}
-                jumpVel={4}
-                position={[0, 5, 0]}
-              >
-                <Fox />
-              </Ecctrl>
-            </Physics>
-            <WelcomeText position={[0, 1, -2]} />
+          <Canvas
+            camera={{
+              position: [0, 1, 0],
+            }}
+          >
+            <Perf position="top-left" />
+            <Suspense fallback={null}>
+              <Lights />
+              <Environments />
+              <Sparkles
+                color="white"
+                count={150}
+                size={10}
+                fade={false}
+                speed={4}
+                scale={20}
+              />
+              <Physics debug={false}>
+                <World4 />
+                <ContactShadows scale={[16, 16]} opacity={(0, 42)} />
+                <Bush />
+                <Ecctrl
+                  camInitDis={-3}
+                  camMaxDis={-3}
+                  maxVelLimit={5}
+                  jumpVel={4}
+                  position={[0, 5, 0]}
+                  name = "fox"
+                  onCollisionEnter={({other}) => {
+                    if(other.rigidBodyObject.name === "Bush"){
+                      console.log("Funciona");
+                    }
+                  }}
+                >
+                  <Fox/>
+                </Ecctrl>
+                <RewardSpawner onCollect={handleCollect}/>
+              </Physics>
+              <WelcomeText position={[0, 1, -2]} />
 
             <Controls />
           </Suspense>

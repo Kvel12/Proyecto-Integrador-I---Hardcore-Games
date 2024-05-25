@@ -1,27 +1,16 @@
-import {
-  CapsuleCollider,
-  CuboidCollider,
-  RigidBody,
-} from "@react-three/rapier";
-import { useEffect, useRef } from "react";
-import { useFox } from "../../../../context/FoxContext";
-import { useAnimations, useGLTF } from "@react-three/drei";
+import React, { useRef, useEffect } from 'react';
+import { useGLTF, useAnimations } from '@react-three/drei';
+import { RigidBody } from '@react-three/rapier';
+import { useFox } from '../../../../context/FoxContext';
+import { Vector3 } from 'three';
+
 
 export default function Fox() {
   const foxBodyRef = useRef();
   const foxRef = useRef();
-  const { fox, setFox } = useFox();
-  const { nodes, materials, animations} = useGLTF("/assets/models/fox/Fox.glb");
-  const { actions } = useAnimations(animations, foxRef)
-  
- 
-
-   //useEffect(() => {
-   //    setFox({
-   //        ref: foxRef.current,
-   //        body: foxBodyRef.current
-   //    })
-   //}, [foxBodyRef.current, foxRef.current])
+  const { fox, setFox } = useFox(); // Obtener la referencia y la función para establecer el zorro desde el contexto
+  const { nodes, materials, animations } = useGLTF('/assets/models/fox/Prueba2.glb');
+  const { actions } = useAnimations(animations, foxRef);
 
   useEffect(() => {
     actions[fox.animation]?.reset().fadeIn(0.5).play();
@@ -30,12 +19,15 @@ export default function Fox() {
     };
   }, [actions, fox.animation]);
 
+  
   return (
-    //<RigidBody ref={foxBodyRef} position={[0, 1, -3]} colliders={false}>
-    <group ref={foxRef} name="Scene" position-y={-0.8}>
+    <RigidBody ref={foxBodyRef} position={[0,0,0]} colliders={false} name='Fox'>
+      <group ref={foxRef} name="Scene">
         <group
-          name="Fox"
-          >
+          position={[0, -0.63, 0]}
+          rotation={[0.094, -Math.PI / 1.7, 0.094]}
+          scale={0.01}
+        >
           <skinnedMesh
             name="Fox_Mesh"
             geometry={nodes.Fox_Mesh.geometry}
@@ -45,6 +37,11 @@ export default function Fox() {
           <primitive object={nodes.Fox_Pelvis} />
         </group>
       </group>
-    //</RigidBody>
+    </RigidBody>
   );
 }
+
+useGLTF.preload('/assets/models/fox/Prueba2.glb');
+
+
+
