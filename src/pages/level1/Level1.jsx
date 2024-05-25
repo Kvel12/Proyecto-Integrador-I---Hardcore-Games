@@ -1,11 +1,6 @@
+
 import { Perf } from "r3f-perf";
-import {
-  ContactShadows,
-  KeyboardControls,
-  Loader,
-  OrbitControls,
-  Sparkles,
-} from "@react-three/drei";
+import { ContactShadows, KeyboardControls, Loader, OrbitControls, Sparkles } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Suspense, useState, useEffect, useRef } from "react";
 import WelcomeText from "./abstractions/WelcomeText";
@@ -24,10 +19,9 @@ import Fox from "./characters/fox/Fox";
 import Bush from "./characters/bush/Bush";
 import useMovements from "../../utils/key-movements";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
-import HealthBar from "../../components/HealthBar";
+import HealthBar from '../../components/HealthBar';
 import RewardSpawner from "./characters/rewards/RewardSpawner";
-import Logout from "../../components/logout/logout";
-import { useAuth } from "../../context/AuthContext";
+import { ObjectCheckpoint } from "./characters/objectCheckpoint/ObjectCheckpoint";
 
 export default function Level1() {
     const map = useMovements();
@@ -36,64 +30,60 @@ export default function Level1() {
     const [volume, setVolume] = useState(0.5); // Estado para almacenar el volumen del juego, valor inicial al 50%
     const [lives, setLives] = useState(3); // Número de vidas del personaje
     const maxLives = 5; // Número máximo de vidas
-    const foxBodyRef = useRef();
-
+    const [collectItems, setCollectedItems] = useState([]);
 
     const handleCollect = (item) => {
-      console.log(`Collected ${item.name}`);
+      setCollectedItems((prevItems) => [...prevItems, item]);
     };
   
 /**para l introduccion del juego */
 const [showInstructions, setShowInstructions] = useState(false);
 
-  const toggleInstructions = () => {
-    setShowInstructions(!showInstructions);
-  };
+const toggleInstructions = () => {
+  setShowInstructions(!showInstructions);
+};
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    audio.loop = true;
-    audio.volume = volume;
+    useEffect(() => {
+        const audio = audioRef.current;
+        audio.loop = true;
+        audio.volume = volume;
+        
+        if (userInteracted && audio.paused){
+            audio.play();
+        }
 
-    if (userInteracted && audio.paused) {
-      audio.play();
+        return () => {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    }, [userInteracted, volume]);
+
+    const handleVolumeChange = (event) => {
+        const newVolume = parseFloat(event.target.value);
+        setVolume(newVolume);
+        audioRef.current.volume = newVolume;
     }
 
-    return () => {
-      audio.pause();
-      audio.currentTime = 0;
+    const playAudio = () => {
+        setUserInteracted(true);
+    }
+
+    const muteAudio = () => {
+        setUserInteracted(false);
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+    }
+
+    const decreaseLives = () => {
+      // Reducir las vidas del personaje
+      if (lives > 0) {
+        setLives((prevLives) => prevLives - 1);
+      }
     };
-  }, [userInteracted, volume]);
-
-  const handleVolumeChange = (event) => {
-    const newVolume = parseFloat(event.target.value);
-    setVolume(newVolume);
-    audioRef.current.volume = newVolume;
-  };
-
-  const playAudio = () => {
-    setUserInteracted(true);
-  };
-
-  const muteAudio = () => {
-    setUserInteracted(false);
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-  };
-
-  const decreaseLives = () => {
-    // Reducir las vidas del personaje
-    if (lives > 0) {
-      setLives((prevLives) => prevLives - 1);
-    }
-  };
-
-  const handleLogout = () => {
-    auth.logout();
-  };
 
     return (
       <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+        <RewardSpawner onCollect={handleCollect} />
         <KeyboardControls map={map}>
           <div>
             <HealthBar lives={lives} maxLives={maxLives} />
@@ -124,28 +114,20 @@ const [showInstructions, setShowInstructions] = useState(false);
           >
             Instrucciones
           </button>
-          {/* Botón de salida */}
-          <div
-            onClick={handleLogout}
-            className="button-logout"
-          >
-            <Logout/>
-          </div>
-        </div>
 
-        {showInstructions && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={toggleInstructions}>
-                &times;
-              </span>
-              <p>
-                En este nivel, Gabriel debe esquivar plantas venenosas y otros
-                insectos. Utiliza las teclas de dirección para moverte.
-              </p>
+          {showInstructions && (
+            <div className="modal">
+              <div className="modal-content">
+                <span className="close" onClick={toggleInstructions}>
+                  &times;
+                </span>
+                <p>
+                  En este nivel, Gabriel debe esquivar plantas venenosas y otros
+                  insectos. Utiliza las teclas de dirección para moverte.
+                </p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
           <Canvas
             camera={{
@@ -166,78 +148,77 @@ const [showInstructions, setShowInstructions] = useState(false);
               />
               <Physics debug={false}>
                 <World4 />
-                <ContactShadows scale={[16, 16]} opacity={(0, 42)} />
                 <Bush />
+                <ContactShadows scale={[16, 16]} opacity={(0, 42)} />
                 <Ecctrl
                   camInitDis={-3}
                   camMaxDis={-3}
                   maxVelLimit={5}
                   jumpVel={4}
                   position={[0, 5, 0]}
-                  name = "fox"
-                  onCollisionEnter={({other}) => {
-                    if(other.rigidBodyObject.name === "Bush"){
-                      console.log("Funciona");
-                    }
-                  }}
                 >
-                  <Fox/>
+                  <Fox />
                 </Ecctrl>
-                <RewardSpawner onCollect={handleCollect}/>
+                <Ecctrl
+                  position={[0, 10, 0]}
+                >
+                  <ObjectCheckpoint />
+                </Ecctrl>
               </Physics>
               <WelcomeText position={[0, 1, -2]} />
 
-            <Controls />
-          </Suspense>
-        </Canvas>
-        <Loader />
-      </KeyboardControls>
+              <Controls />
+            </Suspense>
+          </Canvas>
+          <Loader />
+        </KeyboardControls>
 
-      {/* Control de volumen */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          zIndex: "9999",
-        }}
-      >
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={handleVolumeChange}
-          disabled={!userInteracted}
-        />
+        {/* Control de volumen */}
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: "9999",
+          }}
+        >
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+            disabled={!userInteracted}
+          />
+        </div>
+        {/* Boton para iniciar la reprodución del audio */}
+        <button
+          onClick={playAudio}
+          style={{
+            position: "absolute",
+            top: "50px",
+            right: "10px",
+            zIndex: "9999",
+          }}
+          disabled={userInteracted}
+        >
+          Reproducir audio
+        </button>
+
+        {/* Boton para detener la reproducción del audio */}
+        <button
+          onClick={muteAudio}
+          style={{
+            position: "absolute",
+            top: "80px",
+            right: "10px",
+            zIndex: "9999",
+          }}
+        >
+          Detener audio
+        </button>
       </div>
-      {/* Botón para iniciar la reproducción del audio */}
-      <button
-        onClick={playAudio}
-        style={{
-          position: "absolute",
-          top: "50px",
-          right: "10px",
-          zIndex: "9999",
-        }}
-        disabled={userInteracted}
-      >
-        Reproducir audio
-      </button>
-
-      {/* Botón para detener la reproducción del audio */}
-      <button
-        onClick={muteAudio}
-        style={{
-          position: "absolute",
-          top: "80px",
-          right: "10px",
-          zIndex: "9999",
-        }}
-      >
-        Detener audio
-      </button>
-    </div>
-  );
+    );
 }
+
