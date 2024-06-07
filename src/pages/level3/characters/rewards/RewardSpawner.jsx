@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RewardIcons from "./RewardIcons";
 
-const BoardSize = 100; // Tamaño del tablero
+const BoardSize = 80; // Tamaño del tablero
 
 const RewardSpawner = ({ onCollect }) => {
   const [spawnedItems, setSpawnedItems] = useState([]);

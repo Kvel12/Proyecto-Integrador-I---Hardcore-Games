@@ -16,7 +16,6 @@ import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import Sound from "./abstractions/Sound";
 import Monstruo from "./monstruo";
 import RewardSpawner from "./characters/rewards/RewardSpawner";
-import { gemPower } from "./characters/rewards/gemPower";
 import RewardCounterDisplay from "./characters/rewards/RewardCountDisplay";
 import HealthBar from "../../components/HealthBar";
 
@@ -69,6 +68,9 @@ export default function Level3() {
     return (
         <>
         <KeyboardControls map={map}>
+            <div>
+                <HealthBar lives={lives} maxLives={maxLives} />
+            </div>
             <Canvas camera={{ position: [0, 2, 0] }}>
             <Lights />
             <Environments />

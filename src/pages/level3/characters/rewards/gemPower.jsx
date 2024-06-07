@@ -23,7 +23,7 @@ export function gemPower({onClick, ...props}) {
           geometry={nodes.Gem_Pack_Material_0.geometry}
           material={materials.Material}
           rotation={[-Math.PI / 2, 0, 0]}
-          scale={0.5}
+          scale={1}
           onClick={onClick}
           />
         </RigidBody>
