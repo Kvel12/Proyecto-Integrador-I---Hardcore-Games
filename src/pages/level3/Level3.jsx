@@ -14,6 +14,7 @@ import Controls from "./controls/Controls";
 import useMovements from "../../utils/key-movements";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import Sound from "./abstractions/Sound";
+import Monstruo from "./monstruo";
 
 export default function Level3() {
     const map = useMovements();
@@ -68,6 +69,7 @@ export default function Level3() {
                     >
                         <Fox/>
                     </Ecctrl>
+                    <Monstruo position={[5, 5, 0]} />
                 </Physics>
                 <WelcomeText position={[0, 1, 2]} />
                 <Controls/>
