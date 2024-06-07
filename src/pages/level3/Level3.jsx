@@ -67,32 +67,28 @@ export default function Level3() {
     }, [userInteracted]);
 
     return (
-        <>
-            <KeyboardControls map={map}>
-                <div>
-                    <HealthBar lives={lives} maxLives={maxLives} />
-                </div>
-                <Canvas camera={{ position: [0, 2, 0] }}>
-                <Lights />
-                <Environments />
-                <Perf position="top-left" />
-                <Suspense fallback={null}>
-                    <Physics debug={false}>
-                        <World scale={[200,200,200]}/>
-                        <Ecctrl
-                            camInitDis={-3}
-                            camMaxDis={-3}
-                            maxVelLimit={5}
-                            jumpVel={4}
-                            position={[38,1,1]}
-                        >
-                            <Fox/>
-                        </Ecctrl>
-                        <RewardSpawner onCollect={handleCollect}/>
-                        <Monstruo position={[5, 5, 0]} color="blue" />
-                    </Physics>
-                    <WelcomeText position={[0, 1, 2]} />
-                    <Controls/>
+        <KeyboardControls map={map}>
+            <Canvas camera={{ position: [0, 2, 0] }}>
+            <Lights />
+            <Environments />
+            <Perf position="top-left" />
+            <Suspense fallback={null}>
+                <Physics debug={false}>
+                    <World scale={[200,200,200]}/>
+                    <Ecctrl
+                        camInitDis={-3}
+                        camMaxDis={-3}
+                        maxVelLimit={5}
+                        jumpVel={4}
+                        position={[38,1,1]}
+                    >
+                        <Fox/>
+                    </Ecctrl>
+                    <Monstruo position={[5, 5, 0]} color="blue" />
+
+                </Physics>
+                <WelcomeText position={[0, 1, 2]} />
+                <Controls/>
                 </Suspense>
                 </Canvas>   
             </KeyboardControls>
