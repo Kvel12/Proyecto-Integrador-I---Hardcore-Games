@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
 import { useFox } from '../../../../context/FoxContext';
-import { Vector3 } from 'three';
+import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 
 
 export default function Fox() {
@@ -18,7 +19,7 @@ export default function Fox() {
       if (actions[fox.animation]) actions[fox.animation].fadeOut(0.5);
     };
   }, [actions, fox.animation]);
-  
+
 
   
   return (

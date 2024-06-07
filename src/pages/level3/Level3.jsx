@@ -15,11 +15,26 @@ import useMovements from "../../utils/key-movements";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import Sound from "./abstractions/Sound";
 import Monstruo from "./monstruo";
+import RewardSpawner from "./characters/rewards/RewardSpawner";
+import { gemPower } from "./characters/rewards/gemPower";
+import RewardCounterDisplay from "./characters/rewards/RewardCountDisplay";
+import HealthBar from "../../components/HealthBar";
 
 export default function Level3() {
     const map = useMovements();
     const [audio] = useState(new Audio("./assets/sounds/mundoDuendes.mp3"));
     const [userInteracted, setUserInteracted] = useState(false);
+    const [rewardCounters, setRewardCounters] = useState([]);
+    const [lives, setLives] = useState(5);
+    const maxLives = 5;
+
+    const handleCollect = (item) => {
+        console.log(`Collected ${item.name}`);
+        setRewardCounters((prevCounters) => ({
+          ...prevCounters,
+          [item.name]: (prevCounters[item.name] || 0) + 1
+        }));
+      };
 
     useEffect(() => {
         const handleInteraction = () => {
@@ -52,31 +67,37 @@ export default function Level3() {
     }, [userInteracted]);
 
     return (
-        <KeyboardControls map={map}>
-            <Canvas camera={{ position: [0, 2, 0] }}>
-            <Lights />
-            <Environments />
-            <Perf position="top-left" />
-            <Suspense fallback={null}>
-                <Physics debug={false}>
-                    <World scale={[200,200,200]}/>
-                    <Ecctrl
-                        camInitDis={-3}
-                        camMaxDis={-3}
-                        maxVelLimit={5}
-                        jumpVel={4}
-                        position={[38,1,1]}
-                    >
-                        <Fox/>
-                    </Ecctrl>
-                    <Monstruo position={[5, 5, 0]} color="blue" />
-
-                </Physics>
-                <WelcomeText position={[0, 1, 2]} />
-                <Controls/>
+        <>
+            <KeyboardControls map={map}>
+                <div>
+                    <HealthBar lives={lives} maxLives={maxLives} />
+                </div>
+                <Canvas camera={{ position: [0, 2, 0] }}>
+                <Lights />
+                <Environments />
+                <Perf position="top-left" />
+                <Suspense fallback={null}>
+                    <Physics debug={false}>
+                        <World scale={[200,200,200]}/>
+                        <Ecctrl
+                            camInitDis={-3}
+                            camMaxDis={-3}
+                            maxVelLimit={5}
+                            jumpVel={4}
+                            position={[38,1,1]}
+                        >
+                            <Fox/>
+                        </Ecctrl>
+                        <RewardSpawner onCollect={handleCollect}/>
+                        <Monstruo position={[5, 5, 0]} color="blue" />
+                    </Physics>
+                    <WelcomeText position={[0, 1, 2]} />
+                    <Controls/>
                 </Suspense>
-            </Canvas>   
-        </KeyboardControls>
+                </Canvas>   
+            </KeyboardControls>
+            <RewardCounterDisplay rewardCounters={rewardCounters}/>
+        </>
     )
 }
 
