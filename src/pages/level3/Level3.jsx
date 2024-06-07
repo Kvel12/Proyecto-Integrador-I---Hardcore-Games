@@ -86,6 +86,7 @@ export default function Level3() {
                         <Fox/>
                     </Ecctrl>
                     <Monstruo position={[5, 5, 0]} color="blue" />
+                    <RewardSpawner onCollect={handleCollect}/>
                 </Physics>
                 <WelcomeText position={[0, 1, 2]} />
                 <Controls/>
