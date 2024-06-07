@@ -6,7 +6,7 @@ import { Text } from '@react-three/drei';
 import HealthBar from '../../components/HealthBar';
 import * as THREE from 'three'; // Importar THREE
 
-function Monstruo(props) {
+function Monstruo(props,color) {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF('/assets/models/monstruo.glb');
   const { actions } = useAnimations(animations, group);
@@ -14,7 +14,18 @@ function Monstruo(props) {
   const maxLives = 15;
   const healthBarPositionRef = useRef(new THREE.Vector3());
 
-  
+
+
+  useEffect(() => {
+    // Aplicar el color al material del monstruo
+    if (nodes && nodes.Body_lod1) {
+      nodes.Body_lod1.material = new THREE.MeshStandardMaterial({ color });
+    }
+  }, [nodes, color]);
+
+
+
+
   useEffect(() => {
     console.log('Available animations:', actions); // Agregar esto para ver las animaciones disponibles
     if (actions['Walk1_Action']) {
