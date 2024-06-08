@@ -29,6 +29,23 @@ export default function Level3() {
     const maxLives = 5;
     const [showGlow, setShowGlow] = useState(false);
     const {setIsInvisible} = useFox();
+    const audioDerrota = new Audio("./assets/sounds/derrota.mp3");
+
+
+    const decreaseLives = () => {
+        if (lives > 0) {
+          setLives((prevLives) => {
+            const newLives = prevLives - 1;
+            if (newLives === 0) {
+              audioDerrota.play();
+              setTimeout(() => {
+                window.location.reload();
+              }, 3500);
+            }
+            return newLives;
+          });
+        }
+      };
 
     const handleCollect = (item) => {
         console.log(`Collected ${item.name}`);
@@ -106,6 +123,9 @@ export default function Level3() {
                                 setTimeout(() => {
                                     setShowGlow(false);
                                 }, 2000);
+                            }
+                            if(other.rigidBodyObject.name === "Creature"){
+                                decreaseLives();
                             }
                         }}
                     >
