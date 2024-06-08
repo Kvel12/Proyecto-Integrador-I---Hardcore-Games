@@ -97,7 +97,7 @@ export default function Level3() {
                         camMaxDis={-3}
                         maxVelLimit={5}
                         jumpVel={4}
-                        position={[38,1,1]} //Posicion de inicio es la [38,1,1]
+                        position={[38,1,1]} //Posicion de inicio es la [38,1,1] y la del arbol [2,1,1]
                         name="Fox"
                         onCollisionEnter={({other}) => {
                             if(other.rigidBodyObject.name === "Arbol"){
@@ -111,7 +111,7 @@ export default function Level3() {
                     >
                         <Fox/>
                     </Ecctrl>
-                    <Monstruo position={[5, 5, 0]} color="blue" />
+                    <Monstruo position={[0, 0, 2]} color="blue" />
                     <RewardSpawner onCollect={handleCollect}/>
                 </Physics>
                 <WelcomeText position={[0, 1, 2]} />
