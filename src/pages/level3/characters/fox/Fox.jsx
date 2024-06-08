@@ -5,6 +5,49 @@ import { useFox } from '../../../../context/FoxContext';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
+const createGradientTexture = () => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 1;
+
+  const context = canvas.getContext('2d');
+  const gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+  gradient.addColorStop(0, 'red');
+  gradient.addColorStop(0.5, 'yellow');
+  gradient.addColorStop(1, 'blue');
+
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(10, 1); // Repetir la textura para cubrir toda la esfera
+
+  return texture;
+};
+
+const Aura = () => {
+  const auraRef = useRef();
+
+  // Usamos useFrame para actualizar el aura en cada frame
+  useFrame(() => {
+    // Hacer algo con el aura, como cambiar su tamaño, posición, color, etc.
+  });
+
+  return (
+    <mesh ref={auraRef} position={[0, 0, 0]}>
+      {/* Implementar el efecto del aura aquí */}
+      <meshStandardMaterial
+        color="white"
+        opacity={0.5}
+        transparent
+        map={createGradientTexture()} // Usar la textura degradada
+      />
+      <sphereGeometry args={[1, 32, 32]} /> {/* Cambia los argumentos según el tamaño y la suavidad que desees */}
+    </mesh>
+  );
+};
 
 export default function Fox() {
   const foxBodyRef = useRef();
@@ -12,8 +55,7 @@ export default function Fox() {
   const { fox, setFox } = useFox(); // Obtener la referencia y la función para establecer el zorro desde el contexto
   const { nodes, materials, animations } = useGLTF('/assets/models/fox/Prueba2.glb');
   const { actions } = useAnimations(animations, foxRef);
-  const [defend, setDefend] = useState(false);
-  const [showDefensiveCube, setShowDefensiveCube] = useState(false);
+  const [showAura, setShowAura] = useState(false);
 
   useEffect(() => {
     actions[fox.animation]?.reset().fadeIn(0.5).play();
@@ -25,8 +67,8 @@ export default function Fox() {
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.key === 'p') {
-        // Presionó la tecla 'p', cambiar el estado para mostrar o ocultar el cubo defensivo
-        setShowDefensiveCube(!showDefensiveCube);
+        // Presionó la tecla 'p', cambiar el estado para mostrar u ocultar el aura
+        setShowAura(!showAura);
       }
     };
 
@@ -35,17 +77,14 @@ export default function Fox() {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [showDefensiveCube]);
+  }, [showAura]);
 
 
   return (
     <RigidBody ref={foxBodyRef} position={[0,0,0]} colliders={false} name='Fox'>
       <group ref={foxRef} name="Scene">
-      {showDefensiveCube && (
-          <mesh position={[0, 0, 0]} visible={showDefensiveCube}> {/* Cubo defensivo */}
-            <boxGeometry args={[1.5, 1.5, 1.5]} />
-            <meshBasicMaterial color="white" transparent opacity={0.5} />
-          </mesh>
+        {showAura && (
+          <Aura/>
         )}
         <group
           position={[0, -0.63, 0]}
