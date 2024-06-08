@@ -19,8 +19,9 @@ export function FoxProvider({ children }) {
         animation: "Idle",
     });
 
+
     return (
-        <FoxContext.Provider value={{ fox, setFox }}>
+        <FoxContext.Provider value={{ fox, setFox}}>
             {children}
         </FoxContext.Provider>
     )

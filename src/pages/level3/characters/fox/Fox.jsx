@@ -12,6 +12,8 @@ export default function Fox() {
   const { fox, setFox } = useFox(); // Obtener la referencia y la función para establecer el zorro desde el contexto
   const { nodes, materials, animations } = useGLTF('/assets/models/fox/Prueba2.glb');
   const { actions } = useAnimations(animations, foxRef);
+  const [defend, setDefend] = useState(false);
+  const [showDefensiveCube, setShowDefensiveCube] = useState(false);
 
   useEffect(() => {
     actions[fox.animation]?.reset().fadeIn(0.5).play();
@@ -20,11 +22,31 @@ export default function Fox() {
     };
   }, [actions, fox.animation]);
 
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === 'p') {
+        // Presionó la tecla 'p', cambiar el estado para mostrar o ocultar el cubo defensivo
+        setShowDefensiveCube(!showDefensiveCube);
+      }
+    };
 
-  
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [showDefensiveCube]);
+
+
   return (
     <RigidBody ref={foxBodyRef} position={[0,0,0]} colliders={false} name='Fox'>
       <group ref={foxRef} name="Scene">
+      {showDefensiveCube && (
+          <mesh position={[0, 0, 0]} visible={showDefensiveCube}> {/* Cubo defensivo */}
+            <boxGeometry args={[1.5, 1.5, 1.5]} />
+            <meshBasicMaterial color="white" transparent opacity={0.5} />
+          </mesh>
+        )}
         <group
           position={[0, -0.63, 0]}
           rotation={[0.094, -Math.PI / 1.7, 0.094]}

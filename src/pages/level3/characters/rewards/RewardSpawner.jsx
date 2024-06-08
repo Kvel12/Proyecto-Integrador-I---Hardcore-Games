@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import RewardIcons from "./RewardIcons";
 
 const BoardSize = 80; // Tamaño del tablero
@@ -56,7 +56,7 @@ const RewardSpawner = ({ onCollect }) => {
 
   const getRandomPosition = () => {
     const x = Math.floor(Math.random() * BoardSize) - BoardSize / 2; // Coordenada x dentro del rango [-15, 15]
-    const y = 0; // Altura fija sobre el tablero
+    const y = 0.5; // Altura fija sobre el tablero
     const z = Math.floor(Math.random() * BoardSize) - BoardSize / 2; // Coordenada z dentro del rango [-15, 15]
     return [x, y, z];
   };
