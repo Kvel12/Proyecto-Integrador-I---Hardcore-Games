@@ -1,0 +1,20 @@
+.experience {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .hud-container {
+    position: absolute;
+    top: 0; /* Ajusta según necesites */
+    right: 0; /* Ajusta según necesites */
+    z-index: 10; /* Asegúrate de que esté encima del canvas */
+    pointer-events: none; /* Para que no interfiera con los eventos del mouse en la escena 3D */
+  }
+  
+  .hud-image {
+    width: auto; /* Ajusta según necesites */
+    height: 100vh; /* Ajusta según necesites para que ocupe toda la altura de la pantalla */
+  }
+  

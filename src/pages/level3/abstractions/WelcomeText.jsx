@@ -1,7 +1,7 @@
 import { Center, Float, Text3D } from "@react-three/drei";
 
 const WelcomeText = (props) => {
-    const text = "El mundo de los duendes";
+    const text = "Llega al Arbol, evita los enemigos";
 
     return (
         <Float
@@ -13,6 +13,7 @@ const WelcomeText = (props) => {
         >
         <Center
             position={props.position}
+            rotation={[0, Math.PI, 0]}  // Rotación de 180° en el eje Y
         >
             <Text3D
                 font={"/assets/fonts/Triforce.json"}
