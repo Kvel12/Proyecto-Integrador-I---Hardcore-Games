@@ -1,7 +1,7 @@
 import { Perf } from "r3f-perf";
 import { KeyboardControls, OrbitControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import Fox from "./characters/fox/Fox";
 import WelcomeText from "./abstractions/WelcomeText";
 import RedMen from "./characters/redMen/RedMen";
@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Level3() {
     const map = useMovements();
-    const [audio] = useState(new Audio("./assets/sounds/mundoDuendes.mp3"));
+    const audioRef = useRef(new Audio("./assets/sounds/mundoDuendes.mp3"));
     const [userInteracted, setUserInteracted] = useState(false);
     const [rewardCounters, setRewardCounters] = useState([]);
     const [lives, setLives] = useState(5);
@@ -33,6 +33,7 @@ export default function Level3() {
     const navigate = useNavigate();
     const {setIsInvisible} = useFox();
     const audioDerrota = new Audio("./assets/sounds/derrota.mp3");
+    const [volume, setVolume] = useState(0.5);
 
 
     const decreaseLives = () => {
@@ -70,34 +71,35 @@ export default function Level3() {
       };
 
     useEffect(() => {
-        const handleInteraction = () => {
-            // Una vez que el usuario haya interactuado con la página,
-            // establecemos el estado userInteracted a true.
-            setUserInteracted(true);
-        };
-
-        // Agregamos un evento de clic para detectar la interacción del usuario.
-        document.addEventListener("click", handleInteraction);
-
-        // Limpiamos el evento al desmontar el componente.
-        return () => {
-            document.removeEventListener("click", handleInteraction);
-        };
-    }, []);
-
-    useEffect(() => {
-        // Reproducir el sonido si el usuario ha interactuado con la página.
-        if (userInteracted) {
-            audio.loop = true;
+        const audio = audioRef.current;
+        audio.loop = true;
+        audio.volume = volume;
+        
+        if (userInteracted && audio.paused){
             audio.play();
         }
 
         return () => {
-            // Detener el sonido cuando el componente se desmonta.
             audio.pause();
             audio.currentTime = 0;
-        };
-    }, [userInteracted]);
+        }
+    }, [userInteracted, volume]);
+
+    const handleVolumeChange = (event) => {
+        const newVolume = parseFloat(event.target.value);
+        setVolume(newVolume);
+        audioRef.current.volume = newVolume;
+    }
+
+    const playAudio = () => {
+        setUserInteracted(true);
+    }
+
+    const muteAudio = () => {
+        setUserInteracted(false);
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+    }
 
     return (
         <>
@@ -130,7 +132,7 @@ export default function Level3() {
                                     navigate("/level4"); // Navegar a Level 4
                                 }, 2000);
                             }
-                            if(other.rigidBodyObject.name === "Creature"){
+                            if(other.rigidBodyObject.name === "Creature" || other.rigidBodyObject.name === "trampa"){
                                 decreaseLives();
                             }
                         }}
@@ -157,6 +159,51 @@ export default function Level3() {
                 </Canvas>   
             </KeyboardControls>
             <RewardCounterDisplay rewardCounters={rewardCounters}/>
+        {/* Control de volumen */}
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: "9999",
+          }}
+        >
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+            disabled={!userInteracted}
+          />
+        </div>
+        {/* Boton para iniciar la reprodución del audio */}
+        <button
+          onClick={playAudio}
+          style={{
+            position: "absolute",
+            top: "50px",
+            right: "10px",
+            zIndex: "9999",
+          }}
+          disabled={userInteracted}
+        >
+          Reproducir audio
+        </button>
+
+        {/* Boton para detener la reproducción del audio */}
+        <button
+          onClick={muteAudio}
+          style={{
+            position: "absolute",
+            top: "80px",
+            right: "10px",
+            zIndex: "9999",
+          }}
+        >
+          Detener audio
+        </button>
         </>
     )
 }
