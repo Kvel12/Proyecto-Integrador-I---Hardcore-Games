@@ -30,7 +30,7 @@ export function World(props) {
         material={materials.Material_0}
       />
       </RigidBody>
-      <RigidBody colliders="trimesh" type="fixed">
+      <RigidBody colliders="trimesh" type="fixed" name='Arbol'>
       <mesh
         castShadow
         receiveShadow

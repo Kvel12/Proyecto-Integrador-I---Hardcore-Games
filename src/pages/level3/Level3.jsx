@@ -26,6 +26,7 @@ export default function Level3() {
     const [rewardCounters, setRewardCounters] = useState([]);
     const [lives, setLives] = useState(5);
     const maxLives = 5;
+    const [showGlow, setShowGlow] = useState(false);
 
     const handleCollect = (item) => {
         console.log(`Collected ${item.name}`);
@@ -83,7 +84,17 @@ export default function Level3() {
                         camMaxDis={-3}
                         maxVelLimit={5}
                         jumpVel={4}
-                        position={[38,1,1]}
+                        position={[2,1,1]} //Posicion de inicio es la [38,1,1]
+                        name="Fox"
+                        onCollisionEnter={({other}) => {
+                            if(other.rigidBodyObject.name === "Arbol"){
+                                console.log("Avanza al nivel 4");
+                                setShowGlow(true);
+                                setTimeout(() => {
+                                    setShowGlow(false);
+                                }, 2000);
+                            }
+                        }}
                     >
                         <Fox/>
                     </Ecctrl>
@@ -92,6 +103,17 @@ export default function Level3() {
                 </Physics>
                 <WelcomeText position={[0, 1, 2]} />
                 <Controls/>
+                {setShowGlow && (
+                    <spotLight
+                        intensity={1}
+                        distance={50}
+                        angle={Math.PI / 6}
+                        penumbra={0.5}
+                        position={[0, 0, 0]}
+                        castShadow
+                        color={"yellow"}
+                    />
+                )}
                 </Suspense>
                 </Canvas>   
             </KeyboardControls>
