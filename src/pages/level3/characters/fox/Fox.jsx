@@ -79,13 +79,21 @@ export default function Fox() {
     };
   }, [showAura]);
 
+  useEffect(() =>{
+    if(fox.isInvisible){
+      nodes.Fox_Mesh.material.transparent = true;
+      nodes.Fox_Mesh.material.opacity = 0.3;
+    } else{
+      nodes.Fox_Mesh.material.transparent = false;
+      nodes.Fox_Mesh.material.opacity = 1;
+    }
+  }, [fox.isInvisible, nodes.Fox_Mesh.material])
+
+
 
   return (
-    <RigidBody ref={foxBodyRef} position={[0,0,0]} colliders={false} name='Fox'>
+    fox.isInvisible ? (
       <group ref={foxRef} name="Scene">
-        {showAura && (
-          <Aura/>
-        )}
         <group
           position={[0, -0.63, 0]}
           rotation={[0.094, -Math.PI / 1.7, 0.094]}
@@ -100,7 +108,25 @@ export default function Fox() {
           <primitive object={nodes.Fox_Pelvis} />
         </group>
       </group>
-    </RigidBody>
+    ) : (
+      <RigidBody ref={foxBodyRef} position={[0, 0, 0]} colliders={false} name='Fox'>
+        <group ref={foxRef} name="Scene">
+          <group
+            position={[0, -0.63, 0]}
+            rotation={[0.094, -Math.PI / 1.7, 0.094]}
+            scale={0.01}
+          >
+            <skinnedMesh
+              name="Fox_Mesh"
+              geometry={nodes.Fox_Mesh.geometry}
+              material={materials.Fox}
+              skeleton={nodes.Fox_Mesh.skeleton}
+            />
+            <primitive object={nodes.Fox_Pelvis} />
+          </group>
+        </group>
+      </RigidBody>
+    )
   );
 }
 

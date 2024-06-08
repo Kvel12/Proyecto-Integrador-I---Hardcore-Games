@@ -48,6 +48,7 @@ const RewardSpawner = ({ onCollect }) => {
       ...prevCounters,
       [item.name]: (prevCounters[item.name] || 0) + 1
     }));
+
   };
 
   const getRandomInterval = () => {

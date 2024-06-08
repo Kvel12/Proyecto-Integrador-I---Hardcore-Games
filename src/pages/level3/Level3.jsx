@@ -18,6 +18,7 @@ import Monstruo from "./monstruo";
 import RewardSpawner from "./characters/rewards/RewardSpawner";
 import RewardCounterDisplay from "./characters/rewards/RewardCountDisplay";
 import HealthBar from "../../components/HealthBar";
+import { useFox } from "../../context/FoxContext";
 
 export default function Level3() {
     const map = useMovements();
@@ -27,6 +28,7 @@ export default function Level3() {
     const [lives, setLives] = useState(5);
     const maxLives = 5;
     const [showGlow, setShowGlow] = useState(false);
+    const {setIsInvisible} = useFox();
 
     const handleCollect = (item) => {
         console.log(`Collected ${item.name}`);
@@ -34,6 +36,17 @@ export default function Level3() {
           ...prevCounters,
           [item.name]: (prevCounters[item.name] || 0) + 1
         }));
+
+        if(item.name === "GemPower"){
+            console.log("¡El zorro ha obtenido el poder de la gema!");
+            setIsInvisible(true); // Activar el vuelo del zorro
+
+            // Desactivar el poder después de un segundo
+            setTimeout(() => {
+                setIsInvisible(false);
+                console.log("El poder de la gema se ha desactivado.");
+            }, 3000);
+        }
       };
 
     useEffect(() => {
@@ -84,7 +97,7 @@ export default function Level3() {
                         camMaxDis={-3}
                         maxVelLimit={5}
                         jumpVel={4}
-                        position={[2,1,1]} //Posicion de inicio es la [38,1,1]
+                        position={[38,1,1]} //Posicion de inicio es la [38,1,1]
                         name="Fox"
                         onCollisionEnter={({other}) => {
                             if(other.rigidBodyObject.name === "Arbol"){

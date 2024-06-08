@@ -17,11 +17,15 @@ export function FoxProvider({ children }) {
         ref: foxRef,
         body: null,
         animation: "Idle",
+        isInvisible: false,
     });
 
+    const setIsInvisible = (isInvisible) => {
+        setFox((prevFox) => ({ ...prevFox, isInvisible }));
+      };
 
     return (
-        <FoxContext.Provider value={{ fox, setFox}}>
+        <FoxContext.Provider value={{ fox, setFox, setIsInvisible}}>
             {children}
         </FoxContext.Provider>
     )
