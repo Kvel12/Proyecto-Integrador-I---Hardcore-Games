@@ -18,7 +18,9 @@ import World from "./world/World";
 import RewardSpawner from "./characters/rewards/RewardSpawner";
 import RewardCounterDisplay from "./characters/rewards/RewardCountDisplay";
 import HealthBar from "../../components/HealthBar";
+import FixedImage from "../../components/FixedImage";
 import { useFox } from "../../context/FoxContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Level3() {
     const map = useMovements();
@@ -28,6 +30,7 @@ export default function Level3() {
     const [lives, setLives] = useState(5);
     const maxLives = 5;
     const [showGlow, setShowGlow] = useState(false);
+    const navigate = useNavigate();
     const {setIsInvisible} = useFox();
     const audioDerrota = new Audio("./assets/sounds/derrota.mp3");
 
@@ -101,7 +104,9 @@ export default function Level3() {
         <KeyboardControls map={map}>
             <div>
                 <HealthBar lives={lives} maxLives={maxLives} />
+                <FixedImage src="/assets/images/Solution.jpg" alt="Map Solution" />
             </div>
+            
             <Canvas camera={{ position: [0, 2, 0] }}>
             <Lights />
             <Environments />
@@ -114,7 +119,7 @@ export default function Level3() {
                         camMaxDis={-10}
                         maxVelLimit={5}
                         jumpVel={4}
-                        position={[38,1,1]} //Posicion de inicio es la [38,1,1] y la del arbol [2,1,1]
+                        position={[0.55, 2, -38]} //Posicion de inicio es la [38,1,1] y la del arbol [2,1,1]
                         name="Fox"
                         onCollisionEnter={({other}) => {
                             if(other.rigidBodyObject.name === "Arbol"){
@@ -122,6 +127,7 @@ export default function Level3() {
                                 setShowGlow(true);
                                 setTimeout(() => {
                                     setShowGlow(false);
+                                    navigate("/level4"); // Navegar a Level 4
                                 }, 2000);
                             }
                             if(other.rigidBodyObject.name === "Creature"){
@@ -134,7 +140,7 @@ export default function Level3() {
                     <Creature/>
                     <RewardSpawner onCollect={handleCollect}/>
                 </Physics>
-                <WelcomeText position={[0, 1, 2]} />
+                <WelcomeText position={[1.2, 1.5, -38]}/>
                 <Controls/>
                 {setShowGlow && (
                     <spotLight
