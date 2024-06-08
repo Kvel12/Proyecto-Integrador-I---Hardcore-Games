@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { RigidBody } from '@react-three/rapier'
 
-export function World(props) {
+export default function World(props) {
   const { nodes, materials } = useGLTF("/assets/models/world/mazeLevel3.glb");
   return (
     <group {...props} dispose={null}>

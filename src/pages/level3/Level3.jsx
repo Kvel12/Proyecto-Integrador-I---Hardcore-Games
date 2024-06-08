@@ -9,12 +9,12 @@ import Lights from "./lights/Lights";
 import Environments from "./staging/Environments";
 import { Girl } from "./characters/girl/Girl";
 import { Canvas } from "@react-three/fiber";
-import { World } from "./world/World";
 import Controls from "./controls/Controls";
 import useMovements from "../../utils/key-movements";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import Sound from "./abstractions/Sound";
-import Monstruo from "./monstruo";
+import Creature from "./characters/creature/Creature";
+import World from "./world/World";
 import RewardSpawner from "./characters/rewards/RewardSpawner";
 import RewardCounterDisplay from "./characters/rewards/RewardCountDisplay";
 import HealthBar from "../../components/HealthBar";
@@ -93,8 +93,8 @@ export default function Level3() {
                 <Physics debug={false}>
                     <World scale={[200,200,200]}/>
                     <Ecctrl
-                        camInitDis={-3}
-                        camMaxDis={-3}
+                        camInitDis={-10}
+                        camMaxDis={-10}
                         maxVelLimit={5}
                         jumpVel={4}
                         position={[38,1,1]} //Posicion de inicio es la [38,1,1] y la del arbol [2,1,1]
@@ -111,7 +111,7 @@ export default function Level3() {
                     >
                         <Fox/>
                     </Ecctrl>
-                    <Monstruo position={[0, 0, 2]} color="blue" />
+                    <Creature/>
                     <RewardSpawner onCollect={handleCollect}/>
                 </Physics>
                 <WelcomeText position={[0, 1, 2]} />
