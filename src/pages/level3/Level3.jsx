@@ -132,7 +132,7 @@ export default function Level3() {
                                     navigate("/level4"); // Navegar a Level 4
                                 }, 2000);
                             }
-                            if(other.rigidBodyObject.name === "Creature"){
+                            if(other.rigidBodyObject.name === "Creature" || other.rigidBodyObject.name === "trampa"){
                                 decreaseLives();
                             }
                         }}
