@@ -1,364 +1,778 @@
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
+import { RigidBody } from '@react-three/rapier'
 
-export default function World(props) {
-  const { nodes, materials } = useGLTF('/assets/models/world/castilloV2.glb')
+export default function Model(props) {
+  const { nodes, materials } = useGLTF('/assets/models/world/Level4-1.glb')
   return (
     <group {...props} dispose={null}>
-      <group position={[0.076, 2.125, -0.167]} scale={[1.16, 2, 1.227]}>
-        <mesh geometry={nodes.Cube.geometry} material={materials.Torre} />
-        <mesh geometry={nodes.Cube_1.geometry} material={materials['ladrillo.001']} />
-        <mesh geometry={nodes.Cube_2.geometry} material={materials.Metal} />
-        <mesh geometry={nodes.Cube_3.geometry} material={materials.Asta} />
-        <mesh geometry={nodes.Cube_4.geometry} material={materials['Bandera.001']} />
+      <group name="Scene">
+        <group name="tree_trunk_02" />
+        <group name="tree_trunk_01" />
+        <group name="tree_02" />
+        <group name="tree_01" />
+        <group name="star" />
+        <group name="spikes" />
+        <group name="sign_direction" />
+        <group name="sign_caution" />
+        <group name="rock_03" />
+        <group name="rock_02" />
+        <group name="rock_01" />
+        <group name="platform_02" />
+        <group name="platform_01" />
+        <group name="ladder_tile_broken" />
+        <group name="ladder_tile" />
+        <group name="ladder_endcap" />
+        <group name="key001" />
+        <group name="ground_02_tile" />
+        <group name="ground_02" />
+        <group name="ground_01_tile" />
+        <group name="ground_01" />
+        <group name="grass_02" />
+        <group name="grass_01" />
+        <group name="fruit" />
+        <group name="daisy" />
+        <group name="crate" />
+        <group name="coin" />
+        <group name="checkpoint" />
+        <group name="cactus_02" />
+        <group name="cactus_01" />
+        <group name="bush_05" />
+        <group name="bush_04" />
+        <group name="bush_03" />
+        <group name="bush_02" />
+        <group name="bush_01" />
+        <group name="bridge_tile" />
+        <group name="bridge_start" />
+        <group name="bouncer" />
+        <group name="barrel" />
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="mountain1">
+          <group name="ground_02001">
+            <mesh
+              name="ground_02_toon_material_0001"
+              geometry={nodes.ground_02_toon_material_0001.geometry}
+              material={materials['toon_material.002']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="little_mountain2">
+          <group name="ground_01001">
+            <mesh
+              name="ground_01_toon_material_0001"
+              geometry={nodes.ground_01_toon_material_0001.geometry}
+              material={materials['toon_material.003']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="little_mountain1">
+          <group name="ground_01002">
+            <mesh
+              name="ground_01_toon_material_0002"
+              geometry={nodes.ground_01_toon_material_0002.geometry}
+              material={materials['toon_material.004']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="little_mountain3">
+          <group name="ground_01003">
+            <mesh
+              name="ground_01_toon_material_0003"
+              geometry={nodes.ground_01_toon_material_0003.geometry}
+              material={materials['toon_material.005']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="little_mountain4">
+          <group name="ground_01004">
+            <mesh
+              name="ground_01_toon_material_0004"
+              geometry={nodes.ground_01_toon_material_0004.geometry}
+              material={materials['toon_material.006']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="mountain2">
+          <group name="ground_02002">
+            <mesh
+              name="ground_02_toon_material_0002"
+              geometry={nodes.ground_02_toon_material_0002.geometry}
+              material={materials['toon_material.007']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform1">
+          <group name="platform_01001">
+            <mesh
+              name="platform_01_toon_material_0001"
+              geometry={nodes.platform_01_toon_material_0001.geometry}
+              material={materials['toon_material.008']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform2">
+          <group name="platform_01002">
+            <mesh
+              name="platform_01_toon_material_0002"
+              geometry={nodes.platform_01_toon_material_0002.geometry}
+              material={materials['toon_material.009']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform3">
+          <group name="platform_01003">
+            <mesh
+              name="platform_01_toon_material_0003"
+              geometry={nodes.platform_01_toon_material_0003.geometry}
+              material={materials['toon_material.010']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform4">
+          <group name="platform_01004">
+            <mesh
+              name="platform_01_toon_material_0004"
+              geometry={nodes.platform_01_toon_material_0004.geometry}
+              material={materials['toon_material.011']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform5">
+          <group name="platform_01005">
+            <mesh
+              name="platform_01_toon_material_0005"
+              geometry={nodes.platform_01_toon_material_0005.geometry}
+              material={materials['toon_material.012']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform6">
+          <group name="platform_01006">
+            <mesh
+              name="platform_01_toon_material_0006"
+              geometry={nodes.platform_01_toon_material_0006.geometry}
+              material={materials['toon_material.013']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="begin1">
+          <group name="bridge_start001">
+            <mesh
+              name="bridge_start_toon_material_0001"
+              geometry={nodes.bridge_start_toon_material_0001.geometry}
+              material={materials['toon_material.014']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="begin2">
+          <group name="bridge_start002">
+            <mesh
+              name="bridge_start_toon_material_0002"
+              geometry={nodes.bridge_start_toon_material_0002.geometry}
+              material={materials['toon_material.015']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft1">
+          <group name="bridge_tile001">
+            <mesh
+              name="bridge_tile_toon_material_0001"
+              geometry={nodes.bridge_tile_toon_material_0001.geometry}
+              material={materials['toon_material.016']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft2">
+          <group name="bridge_tile002">
+            <mesh
+              name="bridge_tile_toon_material_0002"
+              geometry={nodes.bridge_tile_toon_material_0002.geometry}
+              material={materials['toon_material.017']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft3">
+          <group name="bridge_tile003">
+            <mesh
+              name="bridge_tile_toon_material_0003"
+              geometry={nodes.bridge_tile_toon_material_0003.geometry}
+              material={materials['toon_material.018']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft4">
+          <group name="bridge_tile004">
+            <mesh
+              name="bridge_tile_toon_material_0004"
+              geometry={nodes.bridge_tile_toon_material_0004.geometry}
+              material={materials['toon_material.019']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="end1">
+          <group name="bridge_start003">
+            <mesh
+              name="bridge_start_toon_material_0003"
+              geometry={nodes.bridge_start_toon_material_0003.geometry}
+              material={materials['toon_material.020']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform7">
+          <group name="platform_01007">
+            <mesh
+              name="platform_01_toon_material_0007"
+              geometry={nodes.platform_01_toon_material_0007.geometry}
+              material={materials['toon_material.021']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeRight1">
+          <group name="bridge_tile005">
+            <mesh
+              name="bridge_tile_toon_material_0005"
+              geometry={nodes.bridge_tile_toon_material_0005.geometry}
+              material={materials['toon_material.022']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeRight2">
+          <group name="bridge_tile006">
+            <mesh
+              name="bridge_tile_toon_material_0006"
+              geometry={nodes.bridge_tile_toon_material_0006.geometry}
+              material={materials['toon_material.023']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeRight3">
+          <group name="bridge_tile007">
+            <mesh
+              name="bridge_tile_toon_material_0007"
+              geometry={nodes.bridge_tile_toon_material_0007.geometry}
+              material={materials['toon_material.024']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeRight4">
+          <group name="bridge_tile008">
+            <mesh
+              name="bridge_tile_toon_material_0008"
+              geometry={nodes.bridge_tile_toon_material_0008.geometry}
+              material={materials['toon_material.025']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeRight5">
+          <group name="bridge_tile009">
+            <mesh
+              name="bridge_tile_toon_material_0009"
+              geometry={nodes.bridge_tile_toon_material_0009.geometry}
+              material={materials['toon_material.026']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeRight6">
+          <group name="bridge_tile010">
+            <mesh
+              name="bridge_tile_toon_material_0010"
+              geometry={nodes.bridge_tile_toon_material_0010.geometry}
+              material={materials['toon_material.027']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="end2">
+          <group name="bridge_start004">
+            <mesh
+              name="bridge_start_toon_material_0004"
+              geometry={nodes.bridge_start_toon_material_0004.geometry}
+              material={materials['toon_material.028']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform8">
+          <group name="platform_01008">
+            <mesh
+              name="platform_01_toon_material_0008"
+              geometry={nodes.platform_01_toon_material_0008.geometry}
+              material={materials['toon_material.029']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform9">
+          <group name="platform_01009">
+            <mesh
+              name="platform_01_toon_material_0009"
+              geometry={nodes.platform_01_toon_material_0009.geometry}
+              material={materials['toon_material.030']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="end3">
+          <group name="bridge_start005">
+            <mesh
+              name="bridge_start_toon_material_0005"
+              geometry={nodes.bridge_start_toon_material_0005.geometry}
+              material={materials['toon_material.031']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft5">
+          <group name="bridge_tile011">
+            <mesh
+              name="bridge_tile_toon_material_0011"
+              geometry={nodes.bridge_tile_toon_material_0011.geometry}
+              material={materials['toon_material.032']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft6">
+          <group name="bridge_tile012">
+            <mesh
+              name="bridge_tile_toon_material_0012"
+              geometry={nodes.bridge_tile_toon_material_0012.geometry}
+              material={materials['toon_material.033']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft7">
+          <group name="bridge_tile013">
+            <mesh
+              name="bridge_tile_toon_material_0013"
+              geometry={nodes.bridge_tile_toon_material_0013.geometry}
+              material={materials['toon_material.034']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft8">
+          <group name="bridge_tile014">
+            <mesh
+              name="bridge_tile_toon_material_0014"
+              geometry={nodes.bridge_tile_toon_material_0014.geometry}
+              material={materials['toon_material.035']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <group name="Flag">
+          <group name="checkpoint001">
+            <mesh
+              name="checkpoint_toon_material_secondary_0001"
+              geometry={nodes.checkpoint_toon_material_secondary_0001.geometry}
+              material={materials['toon_material_secondary.001']}
+            />
+          </group>
+        </group>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Flagpole">
+          <group name="checkpoint002">
+            <mesh
+              name="checkpoint_toon_material_0001"
+              geometry={nodes.checkpoint_toon_material_0001.geometry}
+              material={materials['toon_material.036']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <group name="Sign1">
+          <group name="sign_direction001">
+            <mesh
+              name="sign_direction_toon_material_0001"
+              geometry={nodes.sign_direction_toon_material_0001.geometry}
+              material={materials['toon_material.037']}
+            />
+          </group>
+        </group>
+        <group name="Sign2">
+          <group name="sign_direction002">
+            <mesh
+              name="sign_direction_toon_material_0002"
+              geometry={nodes.sign_direction_toon_material_0002.geometry}
+              material={materials['toon_material.038']}
+            />
+          </group>
+        </group>
+        <group name="Key1">
+          <group name="key002">
+            <mesh
+              name="key001_toon_material_0001"
+              geometry={nodes.key001_toon_material_0001.geometry}
+              material={materials['toon_material.039']}
+            />
+          </group>
+        </group>
+        <group name="Key2">
+          <group name="key003">
+            <mesh
+              name="key001_toon_material_0002"
+              geometry={nodes.key001_toon_material_0002.geometry}
+              material={materials['toon_material.040']}
+            />
+          </group>
+        </group>
+        <group name="Cactus1">
+          <group name="cactus_02001" />
+        </group>
+        <group name="Cactus2">
+          <group name="cactus_02002">
+            <mesh
+              name="cactus_02_toon_material_0002"
+              geometry={nodes.cactus_02_toon_material_0002.geometry}
+              material={materials['toon_material.042']}
+            />
+          </group>
+        </group>
+        <group name="Cactus3">
+          <group name="cactus_02003">
+            <mesh
+              name="cactus_02_toon_material_0003"
+              geometry={nodes.cactus_02_toon_material_0003.geometry}
+              material={materials['toon_material.043']}
+            />
+          </group>
+        </group>
+        <group name="Cactus4">
+          <group name="cactus_02004">
+            <mesh
+              name="cactus_02_toon_material_0004"
+              geometry={nodes.cactus_02_toon_material_0004.geometry}
+              material={materials['toon_material.044']}
+            />
+          </group>
+        </group>
+        <group name="Cactus5">
+          <group name="cactus_02005">
+            <mesh
+              name="cactus_02_toon_material_0005"
+              geometry={nodes.cactus_02_toon_material_0005.geometry}
+              material={materials['toon_material.045']}
+            />
+          </group>
+        </group>
+        <group name="Cactus6">
+          <group name="cactus_02006">
+            <mesh
+              name="cactus_02_toon_material_0006"
+              geometry={nodes.cactus_02_toon_material_0006.geometry}
+              material={materials['toon_material.046']}
+            />
+          </group>
+        </group>
+        <group name="Cactus7">
+          <group name="cactus_02007">
+            <mesh
+              name="cactus_02_toon_material_0007"
+              geometry={nodes.cactus_02_toon_material_0007.geometry}
+              material={materials['toon_material.047']}
+            />
+          </group>
+        </group>
+        <group name="Cactus8">
+          <group name="cactus_02008">
+            <mesh
+              name="cactus_02_toon_material_0008"
+              geometry={nodes.cactus_02_toon_material_0008.geometry}
+              material={materials['toon_material.048']}
+            />
+          </group>
+        </group>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Tree1">
+          <group name="tree_02001">
+            <mesh
+              name="tree_02_toon_material_0001"
+              geometry={nodes.tree_02_toon_material_0001.geometry}
+              material={materials['toon_material.049']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Tree2">
+          <group name="tree_02002">
+            <mesh
+              name="tree_02_toon_material_0002"
+              geometry={nodes.tree_02_toon_material_0002.geometry}
+              material={materials['toon_material.050']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Tree3">
+          <group name="tree_02003">
+            <mesh
+              name="tree_02_toon_material_0003"
+              geometry={nodes.tree_02_toon_material_0003.geometry}
+              material={materials['toon_material.051']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Tree4">
+          <group name="tree_02004">
+            <mesh
+              name="tree_02_toon_material_0004"
+              geometry={nodes.tree_02_toon_material_0004.geometry}
+              material={materials['toon_material.052']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Tree4001">
+          <group name="tree_02005">
+            <mesh
+              name="tree_02_toon_material_0005"
+              geometry={nodes.tree_02_toon_material_0005.geometry}
+              material={materials['toon_material.053']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Tree4002">
+          <group name="tree_02006">
+            <mesh
+              name="tree_02_toon_material_0006"
+              geometry={nodes.tree_02_toon_material_0006.geometry}
+              material={materials['toon_material.054']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <group name="Danger_Sign">
+          <group name="sign_caution001">
+            <mesh
+              name="sign_caution_toon_material_0001"
+              geometry={nodes.sign_caution_toon_material_0001.geometry}
+              material={materials['toon_material.055']}
+            />
+          </group>
+        </group>
+        <group name="Bush1">
+          <group name="bush_05001">
+            <mesh
+              name="bush_05_toon_material_0001"
+              geometry={nodes.bush_05_toon_material_0001.geometry}
+              material={materials['toon_material.056']}
+            />
+          </group>
+        </group>
+        <group name="Bush2">
+          <group name="bush_05002">
+            <mesh
+              name="bush_05_toon_material_0002"
+              geometry={nodes.bush_05_toon_material_0002.geometry}
+              material={materials['toon_material.057']}
+            />
+          </group>
+        </group>
+        <group name="Bush3">
+          <group name="bush_05003">
+            <mesh
+              name="bush_05_toon_material_0003"
+              geometry={nodes.bush_05_toon_material_0003.geometry}
+              material={materials['toon_material.058']}
+            />
+          </group>
+        </group>
+        <group name="Bush4">
+          <group name="bush_05004">
+            <mesh
+              name="bush_05_toon_material_0004"
+              geometry={nodes.bush_05_toon_material_0004.geometry}
+              material={materials['toon_material.059']}
+            />
+          </group>
+        </group>
+        <group name="Bush5">
+          <group name="bush_05005">
+            <mesh
+              name="bush_05_toon_material_0005"
+              geometry={nodes.bush_05_toon_material_0005.geometry}
+              material={materials['toon_material.060']}
+            />
+          </group>
+        </group>
+        <group name="Bush6">
+          <group name="bush_05006">
+            <mesh
+              name="bush_05_toon_material_0006"
+              geometry={nodes.bush_05_toon_material_0006.geometry}
+              material={materials['toon_material.061']}
+            />
+          </group>
+        </group>
+        <group name="Star1">
+          <group name="star001">
+            <mesh
+              name="star_toon_material_0001"
+              geometry={nodes.star_toon_material_0001.geometry}
+              material={materials['toon_material.062']}
+            />
+          </group>
+        </group>
+        <group name="Star2">
+          <group name="star002">
+            <mesh
+              name="star_toon_material_0002"
+              geometry={nodes.star_toon_material_0002.geometry}
+              material={materials['toon_material.063']}
+            />
+          </group>
+        </group>
+        <group name="Star3">
+          <group name="star003">
+            <mesh
+              name="star_toon_material_0003"
+              geometry={nodes.star_toon_material_0003.geometry}
+              material={materials['toon_material.064']}
+            />
+          </group>
+        </group>
+        <group name="Sign3">
+          <group name="sign_direction003">
+            <mesh
+              name="sign_direction_toon_material_0003"
+              geometry={nodes.sign_direction_toon_material_0003.geometry}
+              material={materials['toon_material.065']}
+            />
+          </group>
+        </group>
+        <group name="Sign3001">
+          <group name="sign_direction004">
+            <mesh
+              name="sign_direction_toon_material_0004"
+              geometry={nodes.sign_direction_toon_material_0004.geometry}
+              material={materials['toon_material.066']}
+            />
+          </group>
+        </group>
+        <group name="BushFruit1" />
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Barrel1">
+          <mesh
+            name="barrel_toon_material_0001"
+            geometry={nodes.barrel_toon_material_0001.geometry}
+            material={materials['toon_material.067']}
+          />
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Barrel2">
+          <mesh
+            name="barrel_toon_material_0002"
+            geometry={nodes.barrel_toon_material_0002.geometry}
+            material={materials['toon_material.068']}
+          />
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Barrel3">
+          <mesh
+            name="barrel_toon_material_0003"
+            geometry={nodes.barrel_toon_material_0003.geometry}
+            material={materials['toon_material.069']}
+          />
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="Barrel4">
+          <mesh
+            name="barrel_toon_material_0004"
+            geometry={nodes.barrel_toon_material_0004.geometry}
+            material={materials['toon_material.070']}
+          />
+        </group>
+        </RigidBody>
+        <group name="Apple1">
+          <mesh
+            name="fruit_toon_material_0001"
+            geometry={nodes.fruit_toon_material_0001.geometry}
+            material={materials['toon_material.071']}
+          />
+        </group>
+        <group name="Apple2">
+          <mesh
+            name="fruit_toon_material_0002"
+            geometry={nodes.fruit_toon_material_0002.geometry}
+            material={materials['toon_material.072']}
+          />
+        </group>
+        <RigidBody colliders="trimesh" type="fixed">
+        <mesh name="Plane" geometry={nodes.Plane.geometry} material={materials.Transparent} />
+        </RigidBody>
       </group>
-      <group position={[0.067, 4.58, -0.131]} scale={[1.41, 0.398, 1.685]}>
-        <mesh geometry={nodes.Cube001.geometry} material={materials['Material.001']} />
-        <mesh geometry={nodes.Cube001_1.geometry} material={materials['Material.003']} />
-      </group>
-      <group position={[0.07, 0.823, -13.255]} scale={[3.172, 0.797, 0.845]}>
-        <mesh geometry={nodes.Cube002.geometry} material={materials.Material} />
-        <mesh geometry={nodes.Cube002_1.geometry} material={materials.ladrillo} />
-      </group>
-      <group position={[1.937, 1.42, 4.239]} scale={[3.172, 0.797, 0.845]}>
-        <mesh geometry={nodes.Cube003.geometry} material={materials.Material} />
-        <mesh geometry={nodes.Cube003_1.geometry} material={materials.ladrillo} />
-        <mesh geometry={nodes.Cube003_2.geometry} material={materials['Material.002']} />
-        <mesh geometry={nodes.Cube003_3.geometry} material={materials.Bandera} />
-        <mesh geometry={nodes.Cube003_4.geometry} material={materials['Material.004']} />
-        <mesh geometry={nodes.Cube003_5.geometry} material={materials.fondo} />
-      </group>
-      <group
-        position={[4.893, 0.919, -0.006]}
-        rotation={[0, 1.568, 0]}
-        scale={[3.172, 0.797, 0.845]}>
-        <mesh geometry={nodes.Cube007.geometry} material={materials.Material} />
-        <mesh geometry={nodes.Cube007_1.geometry} material={materials.ladrillo} />
-        <mesh geometry={nodes.Cube007_2.geometry} material={materials['Material.002']} />
-        <mesh geometry={nodes.Cube007_3.geometry} material={materials.Bandera} />
-        <mesh geometry={nodes.Cube007_4.geometry} material={materials['Material.004']} />
-      </group>
-      <group
-        position={[0.546, 0.927, -4.695]}
-        rotation={[Math.PI, -0.009, Math.PI]}
-        scale={[3.172, 0.797, 0.845]}>
-        <mesh geometry={nodes.Cube008.geometry} material={materials.Material} />
-        <mesh geometry={nodes.Cube008_1.geometry} material={materials.ladrillo} />
-        <mesh geometry={nodes.Cube008_2.geometry} material={materials['Material.002']} />
-        <mesh geometry={nodes.Cube008_3.geometry} material={materials.Bandera} />
-        <mesh geometry={nodes.Cube008_4.geometry} material={materials['Material.004']} />
-      </group>
-      <group
-        position={[-4.219, 0.908, -0.259]}
-        rotation={[Math.PI, -1.559, Math.PI]}
-        scale={[3.172, 0.797, 0.845]}>
-        <mesh geometry={nodes.Cube009.geometry} material={materials.Material} />
-        <mesh geometry={nodes.Cube009_1.geometry} material={materials.ladrillo} />
-        <mesh geometry={nodes.Cube009_2.geometry} material={materials['Material.002']} />
-        <mesh geometry={nodes.Cube009_3.geometry} material={materials.Bandera} />
-        <mesh geometry={nodes.Cube009_4.geometry} material={materials['Material.004']} />
-      </group>
-      <mesh
-        geometry={nodes.Puerta001.geometry}
-        material={materials['Material.005']}
-        position={[-0.23, 0.751, 7.405]}
-        scale={[0.851, 1.154, 0.236]}
-      />
-      <mesh
-        geometry={nodes.Torus003.geometry}
-        material={materials['Material.006']}
-        position={[-0.05, 1.663, -0.676]}
-        rotation={[-1.475, 0.386, -1.424]}
-        scale={0.124}
-      />
-      <mesh
-        geometry={nodes.Torus001.geometry}
-        material={materials['Material.006']}
-        position={[1.819, -1.292, -2.221]}
-        rotation={[-1.531, -0.248, -1.398]}
-        scale={0.124}
-      />
-      <mesh
-        geometry={nodes.Torus002.geometry}
-        material={materials['Material.006']}
-        position={[0.033, 5.227, 2.029]}
-        rotation={[-0.152, 1.261, -1.529]}
-        scale={0.124}
-      />
-      <mesh
-        geometry={nodes.Torus004.geometry}
-        material={materials['Material.006']}
-        position={[2.04, 5.282, -0.159]}
-        rotation={[-3.085, -0.629, 1.502]}
-        scale={0.124}
-      />
-      <mesh
-        geometry={nodes.Torus005.geometry}
-        material={materials['Material.006']}
-        position={[-1.922, 5.284, -0.148]}
-        rotation={[-3.085, -0.629, 1.502]}
-        scale={0.124}
-      />
-      <mesh
-        geometry={nodes.Torus006.geometry}
-        material={materials['Material.006']}
-        position={[0.095, 5.193, -2.329]}
-        rotation={[-0.152, 1.261, -1.529]}
-        scale={0.124}
-      />
-      <mesh
-        geometry={nodes.Plane.geometry}
-        material={materials['Material.007']}
-        position={[0.305, 0.134, 1.751]}
-        scale={[18.677, 5.239, 19.384]}
-      />
-      <mesh
-        geometry={nodes.Cylinder001.geometry}
-        material={materials['Material.009']}
-        position={[12.195, 1.495, 6]}
-      />
-      <mesh
-        geometry={nodes.Cylinder002.geometry}
-        material={materials['Material.009']}
-        position={[8, 2, -4]}
-      />
-      <mesh
-        geometry={nodes.Cylinder003.geometry}
-        material={materials['Material.009']}
-        position={[9.195, 1.495, 0]}
-      />
-      <mesh
-        geometry={nodes.Cylinder004.geometry}
-        material={materials['Material.009']}
-        position={[11.195, 1.495, -3]}
-      />
-      <mesh
-        geometry={nodes.Cylinder005.geometry}
-        material={materials['Material.009']}
-        position={[10.195, 1.495, 3]}
-      />
-      <mesh
-        geometry={nodes.Cylinder006.geometry}
-        material={materials['Material.009']}
-        position={[9.195, 1.495, 6]}
-      />
-      <mesh
-        geometry={nodes.Cylinder007.geometry}
-        material={materials['Material.009']}
-        position={[13.195, 1.495, 6]}
-      />
-      <mesh
-        geometry={nodes.Cylinder008.geometry}
-        material={materials['Material.009']}
-        position={[-7.805, 1.495, -3]}
-      />
-      <mesh
-        geometry={nodes.Cylinder009.geometry}
-        material={materials['Material.009']}
-        position={[-8.805, 1.495, -5]}
-      />
-      <mesh
-        geometry={nodes.Cylinder010.geometry}
-        material={materials['Material.009']}
-        position={[-11.805, 1.495, -5]}
-      />
-      <mesh
-        geometry={nodes.Cylinder011.geometry}
-        material={materials['Material.009']}
-        position={[-10.805, 1.495, 3]}
-      />
-      <mesh
-        geometry={nodes.Cylinder012.geometry}
-        material={materials['Material.009']}
-        position={[-6.805, 1.495, 1]}
-      />
-      <mesh
-        geometry={nodes.Cylinder013.geometry}
-        material={materials['Material.009']}
-        position={[5.195, 0.495, 6]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder014.geometry}
-        material={materials['Material.009']}
-        position={[-10.805, 1.495, -4]}
-      />
-      <mesh
-        geometry={nodes.Cylinder015.geometry}
-        material={materials['Material.009']}
-        position={[-10.805, 1.495, 0]}
-      />
-      <mesh
-        geometry={nodes.Cylinder016.geometry}
-        material={materials['Material.009']}
-        position={[7.195, 0.495, 5]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder017.geometry}
-        material={materials['Material.009']}
-        position={[7.195, 1.495, 3]}
-      />
-      <mesh
-        geometry={nodes.Cylinder018.geometry}
-        material={materials['Material.009']}
-        position={[12.195, 1.495, 0]}
-      />
-      <mesh
-        geometry={nodes.Cylinder019.geometry}
-        material={materials['Material.009']}
-        position={[12.195, 1.495, 3]}
-      />
-      <mesh
-        geometry={nodes.Cylinder020.geometry}
-        material={materials['Material.009']}
-        position={[10.195, 1.495, 5]}
-      />
-      <mesh
-        geometry={nodes.Cylinder021.geometry}
-        material={materials['Material.009']}
-        position={[7.195, 0.495, 1]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder022.geometry}
-        material={materials['Material.009']}
-        position={[6.195, 2.495, 2]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder023.geometry}
-        material={materials['Material.009']}
-        position={[-5.805, 0.495, 4]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder024.geometry}
-        material={materials['Material.009']}
-        position={[-3.805, 0.495, 6]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder025.geometry}
-        material={materials['Material.009']}
-        position={[-6.805, 1.495, -6]}
-      />
-      <mesh
-        geometry={nodes.Cylinder026.geometry}
-        material={materials['Material.009']}
-        position={[-10.805, 1.495, -2]}
-      />
-      <mesh
-        geometry={nodes.Cylinder027.geometry}
-        material={materials['Material.009']}
-        position={[-5.805, 0.495, 6]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder028.geometry}
-        material={materials['Material.009']}
-        position={[-8.805, 0.495, 2]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder029.geometry}
-        material={materials['Material.009']}
-        position={[-5.805, 0.495, -2]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder030.geometry}
-        material={materials['Material.009']}
-        position={[-5.805, 0.495, -1]}
-        scale={0.528}
-      />
-      <mesh
-        geometry={nodes.Cylinder031.geometry}
-        material={materials['Material.009']}
-        position={[-8.805, 1.495, -1]}
-      />
-      <mesh
-        geometry={nodes.Cylinder032.geometry}
-        material={materials['Material.009']}
-        position={[-7.805, 1.495, 4]}
-      />
-      <mesh
-        geometry={nodes.Cylinder033.geometry}
-        material={materials['Material.009']}
-        position={[-12.805, 1.495, -1]}
-      />
-      <mesh
-        geometry={nodes.Cylinder034.geometry}
-        material={materials['Material.009']}
-        position={[-4.805, 1.495, -7]}
-      />
-      <mesh
-        geometry={nodes.Cylinder035.geometry}
-        material={materials['Material.009']}
-        position={[0.195, 1.495, -7]}
-      />
-      <mesh
-        geometry={nodes.Cylinder036.geometry}
-        material={materials['Material.009']}
-        position={[7.195, 2.495, -1]}
-      />
-      <mesh
-        geometry={nodes.Cylinder037.geometry}
-        material={materials['Material.009']}
-        position={[10.195, 1.495, -5]}
-      />
-      <mesh
-        geometry={nodes.Cylinder038.geometry}
-        material={materials['Material.009']}
-        position={[7.195, 1.495, -6]}
-      />
-      <mesh
-        geometry={nodes.Cylinder039.geometry}
-        material={materials['Material.009']}
-        position={[9.195, 1.495, -7]}
-      />
-      <mesh
-        geometry={nodes.Cylinder040.geometry}
-        material={materials['Material.009']}
-        position={[6.195, 1.495, -8]}
-      />
-      <mesh
-        geometry={nodes.Cylinder041.geometry}
-        material={materials['Material.009']}
-        position={[3.195, 1.495, -8]}
-      />
-      <mesh
-        geometry={nodes.Cylinder042.geometry}
-        material={materials['Material.009']}
-        position={[5.195, 1.495, -11]}
-      />
-      <mesh
-        geometry={nodes.Cylinder043.geometry}
-        material={materials['Material.009']}
-        position={[9.195, 1.495, -10]}
-      />
-      <mesh
-        geometry={nodes.Cylinder044.geometry}
-        material={materials['Material.009']}
-        position={[7.195, 1.495, -10]}
-      />
-      <mesh
-        geometry={nodes.Cylinder045.geometry}
-        material={materials['Material.009']}
-        position={[-6.805, 1.495, -8]}
-      />
-      <mesh
-        geometry={nodes.Cylinder046.geometry}
-        material={materials['Material.009']}
-        position={[-3.805, 1.495, -9]}
-      />
-      <mesh
-        geometry={nodes.Cylinder047.geometry}
-        material={materials['Material.009']}
-        position={[-9.805, 1.495, -7]}
-      />
     </group>
   )
 }
 
-useGLTF.preload('/assets/models/world/castilloV2.glb')
+useGLTF.preload('/assets/models/world/Level4-1.glb')

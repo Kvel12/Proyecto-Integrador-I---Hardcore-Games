@@ -3,6 +3,7 @@ import { useFox } from "../../../context/FoxContext";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Quaternion, Vector3 } from "three";
+import { materialRotation, rotate } from "three/examples/jsm/nodes/Nodes.js";
 
 export default function Controls() {
     const { fox, setFox } = useFox();
@@ -30,14 +31,30 @@ export default function Controls() {
     // }
 
     useEffect(() => {
-        const unsubscribe = sub(
-          (state) => state.forward || state.backward || state.leftward || state.rightward,
-          (pressed) => {
-            setFox({ ...fox, animation: pressed ? "Running" : "Idle" });
+      const unsubscribe = sub(
+        (state) => ({
+          roll: state.roll,
+          run: state.run,
+          forward: state.forward,
+          backward: state.backward,
+          leftward: state.leftward,
+          rightward: state.rightward
+        }),
+        ({ roll, run, forward, backward, leftward, rightward }) => {
+          if (roll) {
+            setFox({ ...fox, animation: "Rolling" });
+          } else if (run) {
+            setFox({ ...fox, animation: "Running" });
+          } else if (forward || backward || leftward || rightward) {
+            setFox({ ...fox, animation: "Walk" });
+          } else {
+            setFox({ ...fox, animation: "Idle" });
           }
-        );
-        return () => unsubscribe();
-      }, [fox, setFox, sub, get]);
+        }
+      );
+      return () => unsubscribe();
+    }, [fox, setFox, sub, get]);
+
 
       useEffect(()=>{
         if(play){

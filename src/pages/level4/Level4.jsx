@@ -1,65 +1,186 @@
 import { Perf } from "r3f-perf";
 import { KeyboardControls, OrbitControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
+import Fox from "./characters/fox/Fox";
 import WelcomeText from "./abstractions/WelcomeText";
 import RedMen from "./characters/redMen/RedMen";
 import Lights from "./lights/Lights";
 import Environments from "./staging/Environments";
 import { Girl } from "./characters/girl/Girl";
 import { Canvas } from "@react-three/fiber";
-import World from "./world/World";
 import Controls from "./controls/Controls";
-import Avatar from "./characters/avatar/Avatar";
 import useMovements from "../../utils/key-movements";
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
+import Sound from "./abstractions/Sound";
+import World from "./world/World";
+import RewardSpawner from "./characters/rewards/RewardSpawner";
+import RewardCounterDisplay from "./characters/rewards/RewardCountDisplay";
+import HealthBar from "../../components/HealthBar";
+import { useFox } from "../../context/FoxContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Level4() {
-  //const [count,setCount]=useState(0)
-  const [audio] = useState(new Audio("./assets/sounds/CastilloAudio.mp3"));
-  const [userInteracted, setUserInteracted] = useState(false);
+    const map = useMovements();
+    const audioRef = useRef(new Audio("./assets/sounds/mundoDuendes.mp3"));
+    const [userInteracted, setUserInteracted] = useState(false);
+    const [rewardCounters, setRewardCounters] = useState([]);
+    const [lives, setLives] = useState(5);
+    const maxLives = 5;
+    const [showGlow, setShowGlow] = useState(false);
+    const navigate = useNavigate();
+    const {setIsInvisible} = useFox();
+    const audioDerrota = new Audio("./assets/sounds/derrota.mp3");
+    const [volume, setVolume] = useState(0.5);
 
-  useEffect(() => {
-    const handleInteraction = () => {
-        // Una vez que el usuario haya interactuado con la página,
-        // establecemos el estado userInteracted a true.
-        setUserInteracted(true);
-    };
 
-    // Agregamos un evento de clic para detectar la interacción del usuario.
-    document.addEventListener("click", handleInteraction);
+    const decreaseLives = () => {
+        if (lives > 0) {
+          setLives((prevLives) => {
+            const newLives = prevLives - 1;
+            if (newLives === 0) {
+              audioDerrota.play();
+              setTimeout(() => {
+                window.location.reload();
+              }, 3500);
+            }
+            return newLives;
+          });
+        }
+      };
 
-    // Limpiamos el evento al desmontar el componente.
-    return () => {
-        document.removeEventListener("click", handleInteraction);
-    };
-}, []);
+    const handleCollect = (item) => {
+        console.log(`Collected ${item.name}`);
+        setRewardCounters((prevCounters) => ({
+          ...prevCounters,
+          [item.name]: (prevCounters[item.name] || 0) + 1
+        }));
 
-useEffect(() => {
-    // Reproducir el sonido si el usuario ha interactuado con la página.
-    if (userInteracted) {
+        if(item.name === "GemPower"){
+            console.log("¡El zorro ha obtenido el poder de la gema!");
+            setIsInvisible(true); // Activar el vuelo del zorro
+
+            // Desactivar el poder después de un segundo
+            setTimeout(() => {
+                setIsInvisible(false);
+                console.log("El poder de la gema se ha desactivado.");
+            }, 3000);
+        }
+      };
+
+    useEffect(() => {
+        const audio = audioRef.current;
         audio.loop = true;
-        audio.play();
+        audio.volume = volume;
+        
+        if (userInteracted && audio.paused){
+            audio.play();
+        }
+
+        return () => {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    }, [userInteracted, volume]);
+
+    const handleVolumeChange = (event) => {
+        const newVolume = parseFloat(event.target.value);
+        setVolume(newVolume);
+        audioRef.current.volume = newVolume;
     }
 
-    return () => {
-        // Detener el sonido cuando el componente se desmonta.
-        audio.pause();
-        audio.currentTime = 0;
-    };
-}, [userInteracted]);
+    const playAudio = () => {
+        setUserInteracted(true);
+    }
 
-  return (
-    
-    <>
-       <Canvas>
-        <ambientLight />
-        <OrbitControls/>
-        <Suspense fallback={null}>
-          <World />
-        </Suspense>
-      </Canvas>
+    const muteAudio = () => {
+        setUserInteracted(false);
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+    }
 
-    </>
-  );
+    return (
+        <>
+        <KeyboardControls map={map}>
+            <div>
+                <HealthBar lives={lives} maxLives={maxLives} />
+            </div>
+            
+            <Canvas camera={{ position: [0, 2, 0] }}>
+            <Lights />
+            <Environments />
+            <Perf position="top-left" />
+            <Suspense fallback={null}>
+                <Physics debug={false}>
+                    <World/>
+                    <Ecctrl
+                        camInitDis={-5}
+                        camMaxDis={-5}
+                        maxVelLimit={4}
+                        jumpVel={7}
+                        position={[0, 20, 0]} //Posicion de inicio es la [38,1,1] y la del arbol [2,1,1]
+                        name="Fox"
+                    >
+                        <Fox/>
+                    </Ecctrl>
+                    <RewardSpawner onCollect={handleCollect}/>
+                </Physics>
+                <WelcomeText position={[1.2, 1.5, -38]}/>
+                <Controls/>
+                </Suspense>
+                </Canvas>   
+            </KeyboardControls>
+            <RewardCounterDisplay rewardCounters={rewardCounters}/>
+        {/* Control de volumen */}
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: "9999",
+          }}
+        >
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+            disabled={!userInteracted}
+          />
+        </div>
+        {/* Boton para iniciar la reprodución del audio */}
+        <button
+          onClick={playAudio}
+          style={{
+            position: "absolute",
+            top: "50px",
+            right: "10px",
+            zIndex: "9999",
+          }}
+          disabled={userInteracted}
+        >
+          Reproducir audio
+        </button>
+
+        {/* Boton para detener la reproducción del audio */}
+        <button
+          onClick={muteAudio}
+          style={{
+            position: "absolute",
+            top: "80px",
+            right: "10px",
+            zIndex: "9999",
+          }}
+        >
+          Detener audio
+        </button>
+        </>
+    )
 }
+
+
+
+
+
