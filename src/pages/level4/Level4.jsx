@@ -32,6 +32,9 @@ export default function Level4() {
     const {setIsInvisible} = useFox();
     const audioDerrota = new Audio("./assets/sounds/derrota.mp3");
     const [volume, setVolume] = useState(0.5);
+    const [showPlatform5, setShowPlatform5] = useState(false);
+    const [showRest, setShowRest] = useState(false);
+    
 
 
     const decreaseLives = () => {
@@ -67,6 +70,15 @@ export default function Level4() {
             }, 3000);
         }
       };
+
+    const handleCollision = (e) => {
+      if(e.rigidBodyObject.name === 'key1'){
+        setShowPlatform5(true);
+      }
+      if(e.rigidBodyObject.name === 'key2'){
+        setShowRest(true);
+      }
+    }
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -112,7 +124,7 @@ export default function Level4() {
             <Perf position="top-left" />
             <Suspense fallback={null}>
                 <Physics debug={false}>
-                    <World/>
+                    <World showPlatform5={showPlatform5} showRest={showRest}/>
                     <Ecctrl
                         camInitDis={-5}
                         camMaxDis={-5}
@@ -120,6 +132,7 @@ export default function Level4() {
                         jumpVel={7}
                         position={[0, 20, 0]} //Posicion de inicio es la [38,1,1] y la del arbol [2,1,1]
                         name="Fox"
+                        onCollisionEnter={handleCollision}
                     >
                         <Fox/>
                     </Ecctrl>

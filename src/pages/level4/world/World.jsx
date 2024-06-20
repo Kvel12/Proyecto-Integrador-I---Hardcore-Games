@@ -2,10 +2,10 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { RigidBody } from '@react-three/rapier'
 
-export default function Model(props) {
+export default function Model({showPlatform5, showRest}) {
   const { nodes, materials } = useGLTF('/assets/models/world/Level4-1.glb')
   return (
-    <group {...props} dispose={null}>
+    <group dispose={null}>
       <group name="Scene">
         <group name="tree_trunk_02" />
         <group name="tree_trunk_01" />
@@ -46,6 +46,7 @@ export default function Model(props) {
         <group name="bridge_start" />
         <group name="bouncer" />
         <group name="barrel" />
+
         <RigidBody colliders="trimesh" type="fixed">
         <group name="mountain1">
           <group name="ground_02001">
@@ -157,17 +158,6 @@ export default function Model(props) {
         </group>
         </RigidBody>
         <RigidBody colliders="trimesh" type="fixed">
-        <group name="platform5">
-          <group name="platform_01005">
-            <mesh
-              name="platform_01_toon_material_0005"
-              geometry={nodes.platform_01_toon_material_0005.geometry}
-              material={materials['toon_material.012']}
-            />
-          </group>
-        </group>
-        </RigidBody>
-        <RigidBody colliders="trimesh" type="fixed">
         <group name="platform6">
           <group name="platform_01006">
             <mesh
@@ -229,17 +219,6 @@ export default function Model(props) {
               name="bridge_tile_toon_material_0003"
               geometry={nodes.bridge_tile_toon_material_0003.geometry}
               material={materials['toon_material.018']}
-            />
-          </group>
-        </group>
-        </RigidBody>
-        <RigidBody colliders="trimesh" type="fixed">
-        <group name="bridgeLeft4">
-          <group name="bridge_tile004">
-            <mesh
-              name="bridge_tile_toon_material_0004"
-              geometry={nodes.bridge_tile_toon_material_0004.geometry}
-              material={materials['toon_material.019']}
             />
           </group>
         </group>
@@ -365,6 +344,32 @@ export default function Model(props) {
           </group>
         </group>
         </RigidBody>
+        {showPlatform5 && (
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="platform5">
+          <group name="platform_01005">
+            <mesh
+              name="platform_01_toon_material_0005"
+              geometry={nodes.platform_01_toon_material_0005.geometry}
+              material={materials['toon_material.012']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        )}
+        {showRest && (
+          <>
+        <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft4">
+          <group name="bridge_tile004">
+            <mesh
+              name="bridge_tile_toon_material_0004"
+              geometry={nodes.bridge_tile_toon_material_0004.geometry}
+              material={materials['toon_material.019']}
+            />
+          </group>
+        </group>
+        </RigidBody>
         <RigidBody colliders="trimesh" type="fixed">
         <group name="end3">
           <group name="bridge_start005">
@@ -420,6 +425,9 @@ export default function Model(props) {
           </group>
         </group>
         </RigidBody>
+        </>
+        )}
+
         <group name="Flag">
           <group name="checkpoint001">
             <mesh
