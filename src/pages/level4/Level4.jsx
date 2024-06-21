@@ -72,11 +72,19 @@ export default function Level4() {
       };
 
     const handleCollision = (e) => {
-      if(e.rigidBodyObject.name === 'key1'){
+      if(e.rigidBodyObject.name === 'Key1'){
         setShowPlatform5(true);
       }
-      if(e.rigidBodyObject.name === 'key2'){
+      if(e.rigidBodyObject.name === 'Key2'){
         setShowRest(true);
+      }
+      if(e.rigidBodyObject.name === 'cactus'){
+        decreaseLives();
+      }
+      if(e.rigidBodyObject.name === 'apple'){
+        if(lives < maxLives){
+          setLives((prevLives) => prevLives + 1);
+        }
       }
     }
 
