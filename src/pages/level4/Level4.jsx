@@ -40,19 +40,19 @@ export default function Level4() {
 
 
     const decreaseLives = () => {
-        if (lives > 0) {
-          setLives((prevLives) => {
-            const newLives = prevLives - 1;
-            if (newLives === 0) {
-              audioDerrota.play();
-              setTimeout(() => {
-                window.location.reload();
-              }, 3500);
-            }
-            return newLives;
-          });
-        }
-      };
+      if (lives > 0) {
+        setLives((prevLives) => {
+          const newLives = prevLives - 1;
+          if (newLives === 0) {
+            audioDerrota.play();
+            setTimeout(() => {
+              window.location.reload();
+            }, 3500);
+          }
+          return newLives;
+        });
+      }
+    };
 
     const handleCollect = (item) => {
         console.log(`Collected ${item.name}`);
@@ -73,14 +73,24 @@ export default function Level4() {
         }
       };
 
-    const handleCollision = (e) => {
-      if(e.rigidBodyObject.name === 'key1'){
-        setShowPlatform5(true);
+      const handleCollision = (e) => {
+        if(e.rigidBodyObject.name === 'Key1'){
+          setShowPlatform5(true);
+        }
+        if(e.rigidBodyObject.name === 'Key2'){
+          setShowRest(true);
+        }
+        if(e.rigidBodyObject.name === 'cactus'){
+          decreaseLives();
+        }
+        if(e.rigidBodyObject.name === 'apple'){
+          if(lives < maxLives){
+            setLives((prevLives) => prevLives + 1);
+          }else{
+            console.log("Vida completa");
+          }
+        }
       }
-      if(e.rigidBodyObject.name === 'key2'){
-        setShowRest(true);
-      }
-    }
 
     useEffect(() => {
         const audio = audioRef.current;

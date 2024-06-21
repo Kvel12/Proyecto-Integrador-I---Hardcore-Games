@@ -467,6 +467,7 @@ export default function Model({showPlatform5, showRest}) {
             />
           </group>
         </group>
+        <RigidBody name='Key1' type='fixed'>
         <group name="Key1">
           <group name="key002">
             <mesh
@@ -476,6 +477,8 @@ export default function Model({showPlatform5, showRest}) {
             />
           </group>
         </group>
+        </RigidBody>
+        <RigidBody name='Key2' type='fixed'>
         <group name="Key2">
           <group name="key003">
             <mesh
@@ -485,6 +488,8 @@ export default function Model({showPlatform5, showRest}) {
             />
           </group>
         </group>
+        </RigidBody>
+        <RigidBody name='cactus' type='fixed'>
         <group name="Cactus1">
           <group name="cactus_02001" />
         </group>
@@ -551,6 +556,7 @@ export default function Model({showPlatform5, showRest}) {
             />
           </group>
         </group>
+        </RigidBody>
         <RigidBody colliders="trimesh" type="fixed">
         <group name="Tree1">
           <group name="tree_02001">
@@ -762,6 +768,7 @@ export default function Model({showPlatform5, showRest}) {
           />
         </group>
         </RigidBody>
+        <RigidBody name='apple' type='fixed'>
         <group name="Apple1">
           <mesh
             name="fruit_toon_material_0001"
@@ -776,6 +783,7 @@ export default function Model({showPlatform5, showRest}) {
             material={materials['toon_material.072']}
           />
         </group>
+        </RigidBody>
         <RigidBody colliders="trimesh" type="fixed">
         <mesh name="Plane" geometry={nodes.Plane.geometry} material={materials.Transparent} />
         </RigidBody>
