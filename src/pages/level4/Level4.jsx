@@ -34,6 +34,9 @@ export default function Level4() {
     const [volume, setVolume] = useState(0.5);
     const [showPlatform5, setShowPlatform5] = useState(false);
     const [showRest, setShowRest] = useState(false);
+    const [appleVisibility, setAppleVisibility] = useState({ apple1: true, apple2: true });
+    const [keyVisibility, setKeyVisibility] = useState({ Key1: true, Key2: true });
+
     
 
 
@@ -74,16 +77,41 @@ export default function Level4() {
     const handleCollision = (e) => {
       if(e.rigidBodyObject.name === 'Key1'){
         setShowPlatform5(true);
+        setKeyVisibility((prevVisibility) => ({
+          ...prevVisibility,
+          [e.rigidBodyObject.name]: false,
+        }));
       }
       if(e.rigidBodyObject.name === 'Key2'){
         setShowRest(true);
+        setKeyVisibility((prevVisibility) => ({
+          ...prevVisibility,
+          [e.rigidBodyObject.name]: false,
+        }));
       }
       if(e.rigidBodyObject.name === 'cactus'){
         decreaseLives();
       }
-      if(e.rigidBodyObject.name === 'apple'){
+      if(e.rigidBodyObject.name === 'apple1' || e.rigidBodyObject.name === 'apple2'){
         if(lives < maxLives){
           setLives((prevLives) => prevLives + 1);
+        }
+        setAppleVisibility((prevVisibility) => ({
+          ...prevVisibility,
+          [e.rigidBodyObject.name]: false,
+        }));
+      }
+      if(e.rigidBodyObject.name === 'plano'){
+        if(lives > 0){
+          setLives((prevLives) => {
+            const newLives = prevLives - prevLives;
+            if(newLives === 0){
+              audioDerrota.play();
+              setTimeout(() => {
+                window.location.reload();
+              }, 3500);
+            }
+          });
         }
       }
     }
@@ -132,7 +160,12 @@ export default function Level4() {
             <Perf position="top-left" />
             <Suspense fallback={null}>
                 <Physics debug={false}>
-                    <World showPlatform5={showPlatform5} showRest={showRest}/>
+                    <World 
+                      showPlatform5={showPlatform5} 
+                      showRest={showRest}
+                      appleVisibility={appleVisibility}
+                      keyVisibility={keyVisibility}
+                      />
                     <Ecctrl
                         camInitDis={-5}
                         camMaxDis={-5}
