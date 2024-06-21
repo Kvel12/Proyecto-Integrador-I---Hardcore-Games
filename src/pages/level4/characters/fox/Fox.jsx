@@ -119,7 +119,7 @@ export default function Fox() {
           )}
           <group
             position={[0, -0.63, 0]}
-            rotation={[0.094, -Math.PI / 1.7, 0.094]}
+            rotation={[0, -Math.PI / 1.7, 0.094]}
             scale={0.01}
           >
             <skinnedMesh

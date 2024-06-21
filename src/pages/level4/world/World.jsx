@@ -224,6 +224,17 @@ export default function Model({showPlatform5, showRest}) {
         </group>
         </RigidBody>
         <RigidBody colliders="trimesh" type="fixed">
+        <group name="bridgeLeft5">
+          <group name="bridge_tile011">
+            <mesh
+              name="bridge_tile_toon_material_0011"
+              geometry={nodes.bridge_tile_toon_material_0011.geometry}
+              material={materials['toon_material.032']}
+            />
+          </group>
+        </group>
+        </RigidBody>
+        <RigidBody colliders="trimesh" type="fixed">
         <group name="end1">
           <group name="bridge_start003">
             <mesh
@@ -381,17 +392,7 @@ export default function Model({showPlatform5, showRest}) {
           </group>
         </group>
         </RigidBody>
-        <RigidBody colliders="trimesh" type="fixed">
-        <group name="bridgeLeft5">
-          <group name="bridge_tile011">
-            <mesh
-              name="bridge_tile_toon_material_0011"
-              geometry={nodes.bridge_tile_toon_material_0011.geometry}
-              material={materials['toon_material.032']}
-            />
-          </group>
-        </group>
-        </RigidBody>
+        
         <RigidBody colliders="trimesh" type="fixed">
         <group name="bridgeLeft6">
           <group name="bridge_tile012">
