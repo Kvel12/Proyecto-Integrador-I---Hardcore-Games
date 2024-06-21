@@ -3,6 +3,8 @@ import { KeyboardControls, OrbitControls } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Suspense, useState, useEffect, useRef } from "react";
 import Fox from "./characters/fox/Fox";
+import Player1 from "./characters/player1/Player1";
+import Player2 from "./characters/player2/Player2";
 import WelcomeText from "./abstractions/WelcomeText";
 import RedMen from "./characters/redMen/RedMen";
 import Lights from "./lights/Lights";
@@ -11,7 +13,6 @@ import { Girl } from "./characters/girl/Girl";
 import { Canvas } from "@react-three/fiber";
 import Controls from "./controls/Controls";
 import useMovements from "../../utils/key-movements";
-import Ecctrl, { EcctrlAnimation } from "ecctrl";
 import Sound from "./abstractions/Sound";
 import World from "./world/World";
 import RewardSpawner from "./characters/rewards/RewardSpawner";
@@ -19,6 +20,7 @@ import RewardCounterDisplay from "./characters/rewards/RewardCountDisplay";
 import HealthBar from "../../components/HealthBar";
 import { useFox } from "../../context/FoxContext";
 import { useNavigate } from "react-router-dom";
+import App from "./App";
 
 export default function Level4() {
     const map = useMovements();
@@ -125,18 +127,8 @@ export default function Level4() {
             <Suspense fallback={null}>
                 <Physics debug={false}>
                     <World showPlatform5={showPlatform5} showRest={showRest}/>
-                    <Ecctrl
-                        camInitDis={-5}
-                        camMaxDis={-5}
-                        maxVelLimit={4}
-                        jumpVel={7}
-                        position={[0, 20, 0]}
-                        rotation={[0, Math.PI/2, 0]}
-                        name="Fox"
-                        onCollisionEnter={handleCollision}
-                    >
-                        <Fox/>
-                    </Ecctrl>
+                    <Player1 onCollisionEnter={handleCollision} />
+                    <Player2 onCollisionEnter={handleCollision} />
                     <RewardSpawner onCollect={handleCollect}/>
                 </Physics>
                 <WelcomeText position={[1.2, 1.5, -38]}/>

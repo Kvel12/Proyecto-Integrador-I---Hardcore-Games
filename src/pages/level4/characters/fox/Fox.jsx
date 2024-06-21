@@ -4,6 +4,8 @@ import { RigidBody } from '@react-three/rapier';
 import { useFox } from '../../../../context/FoxContext';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { socket } from "../../../../socket/socket-manager";
+import Ecctrl from "ecctrl";
 
 const createGradientTexture = () => {
   const canvas = document.createElement('canvas');
@@ -22,7 +24,7 @@ const createGradientTexture = () => {
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(10, 1); // Repetir la textura para cubrir toda la esfera
+  texture.repeat.set(10, 1);
 
   return texture;
 };
@@ -30,21 +32,19 @@ const createGradientTexture = () => {
 const Aura = () => {
   const auraRef = useRef();
 
-  // Usamos useFrame para actualizar el aura en cada frame
   useFrame(() => {
     // Hacer algo con el aura, como cambiar su tamaño, posición, color, etc.
   });
 
   return (
     <mesh ref={auraRef} position={[0, 0, 0]}>
-      {/* Implementar el efecto del aura aquí */}
       <meshStandardMaterial
         color="white"
         opacity={0.5}
         transparent
-        map={createGradientTexture()} // Usar la textura degradada
+        map={createGradientTexture()}
       />
-      <sphereGeometry args={[1, 32, 32]} /> {/* Cambia los argumentos según el tamaño y la suavidad que desees */}
+      <sphereGeometry args={[1, 32, 32]} />
     </mesh>
   );
 };
@@ -52,10 +52,17 @@ const Aura = () => {
 export default function Fox() {
   const foxBodyRef = useRef();
   const foxRef = useRef();
-  const { fox, setFox } = useFox(); // Obtener la referencia y la función para establecer el zorro desde el contexto
+  const { fox, setFox } = useFox();
   const { nodes, materials, animations } = useGLTF('/assets/models/fox/Prueba2.glb');
   const { actions } = useAnimations(animations, foxRef);
   const [showAura, setShowAura] = useState(false);
+
+  useEffect(() => {
+    setFox({
+      ref: foxRef.current,
+      body: foxBodyRef.current
+    });
+  }, [setFox]);
 
   useEffect(() => {
     actions[fox.animation]?.reset().fadeIn(0.5).play();
@@ -67,11 +74,10 @@ export default function Fox() {
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.key === 'p') {
-        // Presionó la tecla 'p', cambiar el estado para mostrar u ocultar el aura
-        setShowAura(!showAura);
-        setTimeout(()=>{
-          setShowAura(showAura);
-        },1000)
+        setShowAura(prev => !prev);
+        setTimeout(() => {
+          setShowAura(prev => !prev);
+        }, 1000);
       }
     };
 
@@ -80,19 +86,17 @@ export default function Fox() {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [showAura]);
+  }, []);
 
-  useEffect(() =>{
-    if(fox.isInvisible){
+  useEffect(() => {
+    if (fox.isInvisible) {
       nodes.Fox_Mesh.material.transparent = true;
       nodes.Fox_Mesh.material.opacity = 0.3;
-    } else{
+    } else {
       nodes.Fox_Mesh.material.transparent = false;
       nodes.Fox_Mesh.material.opacity = 1;
     }
-  }, [fox.isInvisible, nodes.Fox_Mesh.material])
-
-
+  }, [fox.isInvisible, nodes.Fox_Mesh.material]);
 
   return (
     fox.isInvisible ? (
@@ -114,9 +118,7 @@ export default function Fox() {
     ) : (
       <RigidBody ref={foxBodyRef} position={[0, 0, 0]} colliders={false} name='Fox'>
         <group ref={foxRef} name="Scene">
-          {showAura && (
-            <Aura/>
-          )}
+          {showAura && <Aura />}
           <group
             position={[0, -0.63, 0]}
             rotation={[0, -Math.PI / 1.7, 0.094]}
