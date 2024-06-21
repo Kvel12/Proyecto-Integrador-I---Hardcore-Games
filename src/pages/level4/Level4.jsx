@@ -29,16 +29,14 @@ export default function Level4() {
     const maxLives = 5;
     const [showGlow, setShowGlow] = useState(false);
     const navigate = useNavigate();
-    const {setIsInvisible} = useFox();
+    const {setIsInvisible, activatePower} = useFox();
     const audioDerrota = new Audio("./assets/sounds/derrota.mp3");
     const [volume, setVolume] = useState(0.5);
     const [showPlatform5, setShowPlatform5] = useState(false);
     const [showRest, setShowRest] = useState(false);
     const [appleVisibility, setAppleVisibility] = useState({ apple1: true, apple2: true });
     const [keyVisibility, setKeyVisibility] = useState({ Key1: true, Key2: true });
-
-    
-
+    const [starVisibility, setStartVisibility] = useState({Start1: true, Start2: true, Start3: true});
 
     const decreaseLives = () => {
         if (lives > 0) {
@@ -91,6 +89,27 @@ export default function Level4() {
       }
       if(e.rigidBodyObject.name === 'cactus'){
         decreaseLives();
+      }
+      if(e.rigidBodyObject.name === 'Start1'){
+        activatePower();
+        setStartVisibility((prevVisibility)=> ({
+          ... prevVisibility,
+          [e.rigidBodyObject.name]: false,
+        }));
+      }
+      if(e.rigidBodyObject.name === 'Start2'){
+        activatePower();
+        setStartVisibility((prevVisibility)=> ({
+          ... prevVisibility,
+          [e.rigidBodyObject.name]: false,
+        }));
+      }
+      if(e.rigidBodyObject.name === 'Start3'){
+        activatePower();
+        setStartVisibility((prevVisibility)=> ({
+          ... prevVisibility,
+          [e.rigidBodyObject.name]: false,
+        }));
       }
       if(e.rigidBodyObject.name === 'apple1' || e.rigidBodyObject.name === 'apple2'){
         if(lives < maxLives){
@@ -165,6 +184,7 @@ export default function Level4() {
                       showRest={showRest}
                       appleVisibility={appleVisibility}
                       keyVisibility={keyVisibility}
+                      starVisibility={starVisibility}
                       />
                     <Ecctrl
                         camInitDis={-5}

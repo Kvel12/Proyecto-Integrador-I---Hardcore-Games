@@ -18,14 +18,22 @@ export function FoxProvider({ children }) {
         body: null,
         animation: "Idle",
         isInvisible: false,
+        isPoweredUp: false,
     });
 
     const setIsInvisible = (isInvisible) => {
         setFox((prevFox) => ({ ...prevFox, isInvisible }));
       };
+    
+    const activatePower = () => {
+        setFox((prevFox) => ({ ...prevFox, isPoweredUp:true}));
+        setTimeout(() => {
+            setFox((prevFox) => ({ ...prevFox, isPoweredUp: false }));
+        }, 10000);
+    }
 
     return (
-        <FoxContext.Provider value={{ fox, setFox, setIsInvisible}}>
+        <FoxContext.Provider value={{ fox, setFox, setIsInvisible, activatePower}}>
             {children}
         </FoxContext.Provider>
     )

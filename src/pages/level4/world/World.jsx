@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { RigidBody } from '@react-three/rapier'
 
-export default function Model({showPlatform5, showRest, appleVisibility, keyVisibility}) {
+export default function Model({showPlatform5, showRest, appleVisibility, keyVisibility, starVisibility}) {
   const { nodes, materials } = useGLTF('/assets/models/world/Level4-1.glb')
   return (
     <group dispose={null}>
@@ -690,6 +690,8 @@ export default function Model({showPlatform5, showRest, appleVisibility, keyVisi
             />
           </group>
         </group>
+        {starVisibility.Start1 && (
+        <RigidBody name='Start1' type='fixed'>
         <group name="Star1">
           <group name="star001">
             <mesh
@@ -699,6 +701,10 @@ export default function Model({showPlatform5, showRest, appleVisibility, keyVisi
             />
           </group>
         </group>
+        </RigidBody>
+        )}
+        {starVisibility.Start2 && (
+        <RigidBody name='Start2' type='fixed'>
         <group name="Star2">
           <group name="star002">
             <mesh
@@ -708,6 +714,10 @@ export default function Model({showPlatform5, showRest, appleVisibility, keyVisi
             />
           </group>
         </group>
+        </RigidBody>
+        )}
+        {starVisibility.Start3 && (
+        <RigidBody name='Start3' type='fixed'>
         <group name="Star3">
           <group name="star003">
             <mesh
@@ -717,6 +727,8 @@ export default function Model({showPlatform5, showRest, appleVisibility, keyVisi
             />
           </group>
         </group>
+        </RigidBody>
+        )}
         <group name="Sign3">
           <group name="sign_direction003">
             <mesh

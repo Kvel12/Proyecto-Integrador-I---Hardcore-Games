@@ -56,6 +56,7 @@ export default function Fox() {
   const { nodes, materials, animations } = useGLTF('/assets/models/fox/Prueba2.glb');
   const { actions } = useAnimations(animations, foxRef);
   const [showAura, setShowAura] = useState(false);
+  const poweredUpColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00']; // Colores para el poder
 
   useEffect(() => {
     actions[fox.animation]?.reset().fadeIn(0.5).play();
@@ -82,6 +83,43 @@ export default function Fox() {
     };
   }, [showAura]);
 
+  useEffect(() => {
+    if (fox.isPoweredUp) {
+      const originalColors = [];
+      // Guardar los colores originales del material del zorro
+      for (let key in materials) {
+        if (materials[key].color) {
+          originalColors[key] = materials[key].color.getHex();
+        }
+      }
+
+      // Función para cambiar los colores del zorro
+      const changeColors = () => {
+        let index = 0;
+        const interval = setInterval(() => {
+          if (index >= poweredUpColors.length) {
+            clearInterval(interval);
+            // Restaurar los colores originales después de que termine la animación
+            for (let key in materials) {
+              if (materials[key].color) {
+                materials[key].color.setHex(originalColors[key]);
+              }
+            }
+          } else {
+            for (let key in materials) {
+              if (materials[key].color) {
+                materials[key].color.set(poweredUpColors[index]);
+              }
+            }
+            index++;
+          }
+        }, 100); // Cambiar colores cada 0.3 segundos
+      };
+
+      changeColors();
+    }
+  }, [fox.isPoweredUp, materials]);
+
   useEffect(() =>{
     if(fox.isInvisible){
       nodes.Fox_Mesh.material.transparent = true;
@@ -91,7 +129,6 @@ export default function Fox() {
       nodes.Fox_Mesh.material.opacity = 1;
     }
   }, [fox.isInvisible, nodes.Fox_Mesh.material])
-
 
 
   return (
