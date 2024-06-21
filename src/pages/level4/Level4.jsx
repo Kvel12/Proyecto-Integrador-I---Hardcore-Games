@@ -130,7 +130,8 @@ export default function Level4() {
                         camMaxDis={-5}
                         maxVelLimit={4}
                         jumpVel={7}
-                        position={[0, 20, 0]} //Posicion de inicio es la [38,1,1] y la del arbol [2,1,1]
+                        position={[0, 20, 0]}
+                        rotation={[0, Math.PI/2, 0]}
                         name="Fox"
                         onCollisionEnter={handleCollision}
                     >
