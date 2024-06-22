@@ -132,107 +132,188 @@ export default function Level4() {
       }
 
     useEffect(() => {
-        const audio = audioRef.current;
-        audio.loop = true;
-        audio.volume = volume;
-        
-        if (userInteracted && audio.paused){
-            audio.play();
-        }
+    const audio = audioRef.current;
+    audio.loop = true;
+    audio.volume = volume;
 
-        return () => {
-            audio.pause();
-            audio.currentTime = 0;
-        }
-    }, [userInteracted, volume]);
-
-    const handleVolumeChange = (event) => {
-        const newVolume = parseFloat(event.target.value);
-        setVolume(newVolume);
-        audioRef.current.volume = newVolume;
+    if (userInteracted && audio.paused) {
+      audio.play();
     }
 
-    const playAudio = () => {
-        setUserInteracted(true);
-    }
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, [userInteracted, volume]);
 
-    const muteAudio = () => {
-        setUserInteracted(false);
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-    }
+  const handleVolumeChange = (event) => {
+    const newVolume = parseFloat(event.target.value);
+    setVolume(newVolume);
+    audioRef.current.volume = newVolume;
+  };
 
-    return (
-        <>
-        <KeyboardControls map={map}>
-            <div>
-                <HealthBar lives={lives} maxLives={maxLives} />
-            </div>
-            
-            <Canvas camera={{ position: [0, 2, 0] }}>
-            <Lights />
-            <Environments />
-            <Perf position="top-left" />
-            <Suspense fallback={null}>
-                <Physics debug={false}>
-                    <World showPlatform5={platformStates.platform5} showRest={platformStates.rest}/>
-                    <Player1 onCollisionEnter={handleCollision} />
-                    <Player2 onCollisionEnter={handleCollision} />
-                    <RewardSpawner onCollect={handleCollect}/>
-                </Physics>
-                <WelcomeText position={[1.2, 1.5, -38]}/>
-                <Controls/>
-                </Suspense>
-                </Canvas>   
-            </KeyboardControls>
-            <RewardCounterDisplay rewardCounters={rewardCounters}/>
-        {/* Control de volumen */}
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            zIndex: "9999",
-          }}
-        >
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-            disabled={!userInteracted}
-          />
+  const playAudio = () => {
+    setUserInteracted(true);
+  };
+
+  const muteAudio = () => {
+    setUserInteracted(false);
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  };
+
+  return (
+    <>
+      <KeyboardControls map={map}>
+        <div>
+          <HealthBar lives={lives} maxLives={maxLives} />
         </div>
-        {/* Boton para iniciar la reprodución del audio */}
-        <button
-          onClick={playAudio}
-          style={{
-            position: "absolute",
-            top: "50px",
-            right: "10px",
-            zIndex: "9999",
-          }}
-          disabled={userInteracted}
-        >
-          Reproducir audio
-        </button>
 
-        {/* Boton para detener la reproducción del audio */}
-        <button
-          onClick={muteAudio}
-          style={{
-            position: "absolute",
-            top: "80px",
-            right: "10px",
-            zIndex: "9999",
-          }}
-        >
-          Detener audio
-        </button>
-        </>
-    )
+        <Canvas camera={{ position: [0, 2, 0] }}>
+          <Lights />
+          <Environments />
+          <Perf position="top-left" />
+          <Suspense fallback={null}>
+            <Physics debug={false}>
+              <World
+                showPlatform5={showPlatform5}
+                showRest={showRest}
+                appleVisibility={appleVisibility}
+                keyVisibility={keyVisibility}
+                starVisibility={starVisibility}
+              />
+              <Ecctrl
+                camInitDis={-5}
+                camMaxDis={-5}
+                maxVelLimit={4}
+                jumpVel={7}
+                position={[0, 20, 0]}
+                rotation={[0, Math.PI / 2, 0]}
+                name="Fox"
+                onCollisionEnter={handleCollision}
+              >
+                <Fox />
+              </Ecctrl>
+              <RewardSpawner onCollect={handleCollect} />
+              <Evil_Warrior rotation={[0, Math.PI/2, 0]}/>
+              <Evil_Warrior position={[2,10.8,4]}/>
+            </Physics>
+            <WelcomeText position={[3, 13, -7]} />
+
+            <Text
+              position={[3, 12, -5]}
+              fontSize={0.5}
+              color="black"
+              anchorX="center"
+              anchorY="middle"
+              outlineWidth={0.05}
+              outlineColor="white"
+              depthOffset={1}
+              
+            >
+              Necesitas la ayuda de otro jugador {"\n"}
+              para llegar hasta el final del{"\n"}
+              juego
+            </Text>
+
+            <Controls />
+          </Suspense>
+        </Canvas>
+      </KeyboardControls>
+      <RewardCounterDisplay rewardCounters={rewardCounters} />
+      {/* Control de volumen */}
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          zIndex: "9999",
+        }}
+      >
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={handleVolumeChange}
+          disabled={!userInteracted}
+        />
+      </div>
+      {/* Boton para iniciar la reprodución del audio */}
+      <button
+        onClick={playAudio}
+        style={{
+          position: "absolute",
+          top: "50px",
+          right: "10px",
+          zIndex: "9999",
+        }}
+        disabled={userInteracted}
+      >
+        Reproducir audio
+      </button>
+
+      {/* Boton para detener la reproducción del audio */}
+      <button
+        onClick={muteAudio}
+        style={{
+          position: "absolute",
+          top: "80px",
+          right: "10px",
+          zIndex: "9999",
+        }}
+      >
+        Detener audio
+      </button>
+       {/* Boton para  las instruciones del juego   */}
+      <button
+  onClick={() => setShowInstructions(true)}
+  style={{
+    position: "absolute",
+    top: "110px",
+    right: "10px",
+    zIndex: "9999",
+  }}
+>
+  Mostrar Instrucciones
+</button>
+ {/* Cuadro de instrucciones */}
+
+{showInstructions && (
+  <div
+    style={{
+      position: "absolute",
+      top: "20%",
+      left: "50%",
+      transform: "translate(-50%, -20%)",
+      padding: "20px",
+      backgroundColor: "rgba(255, 255, 255, 0.9)",
+      borderRadius: "10px",
+      boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+      zIndex: "10000",
+      width: "300px",
+      textAlign: "center",
+    }}
+  >
+    <h2>Instrucciones del Juego</h2>
+    <p>
+      1. Utiliza las teclas de flechas o WASD para moverte.
+    </p>
+    <p>
+      2. Recoge objetos para obtener poderes especiales.
+    </p>
+    <p>
+      3. Evita los obstáculos y enemigos.
+    </p>
+    <p>
+      4. ¡Colabora con otro jugador para completar el nivel!
+    </p>
+    <button onClick={() => setShowInstructions(false)}>Cerrar</button>
+  </div>
+)}
+    </>
+  );
 }
 
 
