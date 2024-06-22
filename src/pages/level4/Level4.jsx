@@ -93,10 +93,7 @@ export default function Level4() {
         setPlatformStates(newState.platforms);
         setKeyVisibility(newState.keys);
         setAppleVisibility(newState.apples);
-        setStartVisibility(prevState => {
-          console.log("Updating star visibility:", newState.stars);
-          return newState.stars;
-        });
+        setStartVisibility(newState.stars);
       });
     
       socket.on('game-state', (initialState) => {
@@ -151,6 +148,10 @@ export default function Level4() {
           console.log("Emitting collect-star for:", e.rigidBodyObject.name);
           activatePower();
           socket.emit('collect-star', e.rigidBodyObject.name);
+          setStartVisibility(prev => ({
+            ...prev,
+            [e.rigidBodyObject.name]: false
+          }));
         }
         if (e.rigidBodyObject.name === "apple1" || e.rigidBodyObject.name === "apple2") {
           if (lives < maxLives) {

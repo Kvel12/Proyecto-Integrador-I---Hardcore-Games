@@ -6,6 +6,7 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { socket } from "../../../../socket/socket-manager";
 import Ecctrl from "ecctrl";
+const poweredUpColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00']; // Colores para el poder
 
 const createGradientTexture = () => {
   const canvas = document.createElement('canvas');
@@ -87,6 +88,43 @@ export default function Fox() {
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, []);
+
+  useEffect(() => {
+    if (fox.isPoweredUp) {
+      const originalColors = [];
+      // Guardar los colores originales del material del zorro
+      for (let key in materials) {
+        if (materials[key].color) {
+          originalColors[key] = materials[key].color.getHex();
+        }
+      }
+
+      // Función para cambiar los colores del zorro
+      const changeColors = () => {
+        let index = 0;
+        const interval = setInterval(() => {
+          if (index >= poweredUpColors.length) {
+            clearInterval(interval);
+            // Restaurar los colores originales después de que termine la animación
+            for (let key in materials) {
+              if (materials[key].color) {
+                materials[key].color.setHex(originalColors[key]);
+              }
+            }
+          } else {
+            for (let key in materials) {
+              if (materials[key].color) {
+                materials[key].color.set(poweredUpColors[index]);
+              }
+            }
+            index++;
+          }
+        }, 100); // Cambiar colores cada 0.3 segundos
+      };
+
+      changeColors();
+    }
+  }, [fox.isPoweredUp, materials]);
 
   useEffect(() => {
     if (fox.isInvisible) {

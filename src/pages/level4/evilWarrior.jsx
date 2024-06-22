@@ -22,7 +22,7 @@ export function Evil_Warrior(props) {
             setVisible(false);
             setTimeout(() => {
               setVisible(true);
-            }, 2000);
+            }, 2500);
           }
         };
     
