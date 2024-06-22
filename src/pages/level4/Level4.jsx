@@ -1,5 +1,5 @@
 import { Perf } from "r3f-perf";
-import { KeyboardControls, OrbitControls } from "@react-three/drei";
+import { KeyboardControls, OrbitControls, Text } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Suspense, useState, useEffect, useRef } from "react";
 import Fox from "./characters/fox/Fox";
@@ -21,241 +21,266 @@ import { useFox } from "../../context/FoxContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Level4() {
-    const map = useMovements();
-    const audioRef = useRef(new Audio("./assets/sounds/mundoDuendes.mp3"));
-    const [userInteracted, setUserInteracted] = useState(false);
-    const [rewardCounters, setRewardCounters] = useState([]);
-    const [lives, setLives] = useState(5);
-    const maxLives = 5;
-    const [showGlow, setShowGlow] = useState(false);
-    const navigate = useNavigate();
-    const {setIsInvisible, activatePower} = useFox();
-    const audioDerrota = new Audio("./assets/sounds/derrota.mp3");
-    const [volume, setVolume] = useState(0.5);
-    const [showPlatform5, setShowPlatform5] = useState(false);
-    const [showRest, setShowRest] = useState(false);
-    const [appleVisibility, setAppleVisibility] = useState({ apple1: true, apple2: true });
-    const [keyVisibility, setKeyVisibility] = useState({ Key1: true, Key2: true });
-    const [starVisibility, setStartVisibility] = useState({Start1: true, Start2: true, Start3: true});
+  const map = useMovements();
+  const audioRef = useRef(new Audio("./assets/sounds/mundoDuendes.mp3"));
+  const [userInteracted, setUserInteracted] = useState(false);
+  const [rewardCounters, setRewardCounters] = useState([]);
+  const [lives, setLives] = useState(5);
+  const maxLives = 5;
+  const [showGlow, setShowGlow] = useState(false);
+  const navigate = useNavigate();
+  const { setIsInvisible, activatePower } = useFox();
+  const audioDerrota = new Audio("./assets/sounds/derrota.mp3");
+  const [volume, setVolume] = useState(0.5);
+  const [showPlatform5, setShowPlatform5] = useState(false);
+  const [showRest, setShowRest] = useState(false);
+  const [appleVisibility, setAppleVisibility] = useState({
+    apple1: true,
+    apple2: true,
+  });
+  const [keyVisibility, setKeyVisibility] = useState({
+    Key1: true,
+    Key2: true,
+  });
+  const [starVisibility, setStartVisibility] = useState({
+    Start1: true,
+    Start2: true,
+    Start3: true,
+  });
 
-    const decreaseLives = () => {
-        if (lives > 0) {
-          setLives((prevLives) => {
-            const newLives = prevLives - 1;
-            if (newLives === 0) {
-              audioDerrota.play();
-              setTimeout(() => {
-                window.location.reload();
-              }, 3500);
-            }
-            return newLives;
-          });
+  const decreaseLives = () => {
+    if (lives > 0) {
+      setLives((prevLives) => {
+        const newLives = prevLives - 1;
+        if (newLives === 0) {
+          audioDerrota.play();
+          setTimeout(() => {
+            window.location.reload();
+          }, 3500);
         }
-      };
+        return newLives;
+      });
+    }
+  };
 
-    const handleCollect = (item) => {
-        console.log(`Collected ${item.name}`);
-        setRewardCounters((prevCounters) => ({
-          ...prevCounters,
-          [item.name]: (prevCounters[item.name] || 0) + 1
-        }));
+  const handleCollect = (item) => {
+    console.log(`Collected ${item.name}`);
+    setRewardCounters((prevCounters) => ({
+      ...prevCounters,
+      [item.name]: (prevCounters[item.name] || 0) + 1,
+    }));
 
-        if(item.name === "GemPower"){
-            console.log("¡El zorro ha obtenido el poder de la gema!");
-            setIsInvisible(true); // Activar el vuelo del zorro
+    if (item.name === "GemPower") {
+      console.log("¡El zorro ha obtenido el poder de la gema!");
+      setIsInvisible(true); // Activar el vuelo del zorro
 
-            // Desactivar el poder después de un segundo
+      // Desactivar el poder después de un segundo
+      setTimeout(() => {
+        setIsInvisible(false);
+        console.log("El poder de la gema se ha desactivado.");
+      }, 3000);
+    }
+  };
+
+  const handleCollision = (e) => {
+    if (e.rigidBodyObject.name === "Key1") {
+      setShowPlatform5(true);
+      setKeyVisibility((prevVisibility) => ({
+        ...prevVisibility,
+        [e.rigidBodyObject.name]: false,
+      }));
+    }
+    if (e.rigidBodyObject.name === "Key2") {
+      setShowRest(true);
+      setKeyVisibility((prevVisibility) => ({
+        ...prevVisibility,
+        [e.rigidBodyObject.name]: false,
+      }));
+    }
+    if (e.rigidBodyObject.name === "cactus") {
+      decreaseLives();
+    }
+    if (e.rigidBodyObject.name === "Start1") {
+      activatePower();
+      setStartVisibility((prevVisibility) => ({
+        ...prevVisibility,
+        [e.rigidBodyObject.name]: false,
+      }));
+    }
+    if (e.rigidBodyObject.name === "Start2") {
+      activatePower();
+      setStartVisibility((prevVisibility) => ({
+        ...prevVisibility,
+        [e.rigidBodyObject.name]: false,
+      }));
+    }
+    if (e.rigidBodyObject.name === "Start3") {
+      activatePower();
+      setStartVisibility((prevVisibility) => ({
+        ...prevVisibility,
+        [e.rigidBodyObject.name]: false,
+      }));
+    }
+    if (
+      e.rigidBodyObject.name === "apple1" ||
+      e.rigidBodyObject.name === "apple2"
+    ) {
+      if (lives < maxLives) {
+        setLives((prevLives) => prevLives + 1);
+      }
+      setAppleVisibility((prevVisibility) => ({
+        ...prevVisibility,
+        [e.rigidBodyObject.name]: false,
+      }));
+    }
+    if (e.rigidBodyObject.name === "plano") {
+      if (lives > 0) {
+        setLives((prevLives) => {
+          const newLives = prevLives - prevLives;
+          if (newLives === 0) {
+            audioDerrota.play();
             setTimeout(() => {
-                setIsInvisible(false);
-                console.log("El poder de la gema se ha desactivado.");
-            }, 3000);
-        }
-      };
-
-    const handleCollision = (e) => {
-      if(e.rigidBodyObject.name === 'Key1'){
-        setShowPlatform5(true);
-        setKeyVisibility((prevVisibility) => ({
-          ...prevVisibility,
-          [e.rigidBodyObject.name]: false,
-        }));
-      }
-      if(e.rigidBodyObject.name === 'Key2'){
-        setShowRest(true);
-        setKeyVisibility((prevVisibility) => ({
-          ...prevVisibility,
-          [e.rigidBodyObject.name]: false,
-        }));
-      }
-      if(e.rigidBodyObject.name === 'cactus'){
-        decreaseLives();
-      }
-      if(e.rigidBodyObject.name === 'Start1'){
-        activatePower();
-        setStartVisibility((prevVisibility)=> ({
-          ... prevVisibility,
-          [e.rigidBodyObject.name]: false,
-        }));
-      }
-      if(e.rigidBodyObject.name === 'Start2'){
-        activatePower();
-        setStartVisibility((prevVisibility)=> ({
-          ... prevVisibility,
-          [e.rigidBodyObject.name]: false,
-        }));
-      }
-      if(e.rigidBodyObject.name === 'Start3'){
-        activatePower();
-        setStartVisibility((prevVisibility)=> ({
-          ... prevVisibility,
-          [e.rigidBodyObject.name]: false,
-        }));
-      }
-      if(e.rigidBodyObject.name === 'apple1' || e.rigidBodyObject.name === 'apple2'){
-        if(lives < maxLives){
-          setLives((prevLives) => prevLives + 1);
-        }
-        setAppleVisibility((prevVisibility) => ({
-          ...prevVisibility,
-          [e.rigidBodyObject.name]: false,
-        }));
-      }
-      if(e.rigidBodyObject.name === 'plano'){
-        if(lives > 0){
-          setLives((prevLives) => {
-            const newLives = prevLives - prevLives;
-            if(newLives === 0){
-              audioDerrota.play();
-              setTimeout(() => {
-                window.location.reload();
-              }, 3500);
-            }
-          });
-        }
+              window.location.reload();
+            }, 3500);
+          }
+        });
       }
     }
+  };
 
-    useEffect(() => {
-        const audio = audioRef.current;
-        audio.loop = true;
-        audio.volume = volume;
-        
-        if (userInteracted && audio.paused){
-            audio.play();
-        }
+  useEffect(() => {
+    const audio = audioRef.current;
+    audio.loop = true;
+    audio.volume = volume;
 
-        return () => {
-            audio.pause();
-            audio.currentTime = 0;
-        }
-    }, [userInteracted, volume]);
-
-    const handleVolumeChange = (event) => {
-        const newVolume = parseFloat(event.target.value);
-        setVolume(newVolume);
-        audioRef.current.volume = newVolume;
+    if (userInteracted && audio.paused) {
+      audio.play();
     }
 
-    const playAudio = () => {
-        setUserInteracted(true);
-    }
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, [userInteracted, volume]);
 
-    const muteAudio = () => {
-        setUserInteracted(false);
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-    }
+  const handleVolumeChange = (event) => {
+    const newVolume = parseFloat(event.target.value);
+    setVolume(newVolume);
+    audioRef.current.volume = newVolume;
+  };
 
-    return (
-        <>
-        <KeyboardControls map={map}>
-            <div>
-                <HealthBar lives={lives} maxLives={maxLives} />
-            </div>
-            
-            <Canvas camera={{ position: [0, 2, 0] }}>
-            <Lights />
-            <Environments />
-            <Perf position="top-left" />
-            <Suspense fallback={null}>
-                <Physics debug={false}>
-                    <World 
-                      showPlatform5={showPlatform5} 
-                      showRest={showRest}
-                      appleVisibility={appleVisibility}
-                      keyVisibility={keyVisibility}
-                      starVisibility={starVisibility}
-                      />
-                    <Ecctrl
-                        camInitDis={-5}
-                        camMaxDis={-5}
-                        maxVelLimit={4}
-                        jumpVel={7}
-                        position={[0, 20, 0]}
-                        rotation={[0, Math.PI/2, 0]}
-                        name="Fox"
-                        onCollisionEnter={handleCollision}
-                    >
-                        <Fox/>
-                    </Ecctrl>
-                    <RewardSpawner onCollect={handleCollect}/>
-                </Physics>
-                <WelcomeText position={[1.2, 1.5, -38]}/>
-                <Controls/>
-                </Suspense>
-                </Canvas>   
-            </KeyboardControls>
-            <RewardCounterDisplay rewardCounters={rewardCounters}/>
-        {/* Control de volumen */}
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            zIndex: "9999",
-          }}
-        >
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-            disabled={!userInteracted}
-          />
+  const playAudio = () => {
+    setUserInteracted(true);
+  };
+
+  const muteAudio = () => {
+    setUserInteracted(false);
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  };
+
+  return (
+    <>
+      <KeyboardControls map={map}>
+        <div>
+          <HealthBar lives={lives} maxLives={maxLives} />
         </div>
-        {/* Boton para iniciar la reprodución del audio */}
-        <button
-          onClick={playAudio}
-          style={{
-            position: "absolute",
-            top: "50px",
-            right: "10px",
-            zIndex: "9999",
-          }}
-          disabled={userInteracted}
-        >
-          Reproducir audio
-        </button>
 
-        {/* Boton para detener la reproducción del audio */}
-        <button
-          onClick={muteAudio}
-          style={{
-            position: "absolute",
-            top: "80px",
-            right: "10px",
-            zIndex: "9999",
-          }}
-        >
-          Detener audio
-        </button>
-        </>
-    )
+        <Canvas camera={{ position: [0, 2, 0] }}>
+          <Lights />
+          <Environments />
+          <Perf position="top-left" />
+          <Suspense fallback={null}>
+            <Physics debug={false}>
+              <World
+                showPlatform5={showPlatform5}
+                showRest={showRest}
+                appleVisibility={appleVisibility}
+                keyVisibility={keyVisibility}
+                starVisibility={starVisibility}
+              />
+              <Ecctrl
+                camInitDis={-5}
+                camMaxDis={-5}
+                maxVelLimit={4}
+                jumpVel={7}
+                position={[0, 20, 0]}
+                rotation={[0, Math.PI / 2, 0]}
+                name="Fox"
+                onCollisionEnter={handleCollision}
+              >
+                <Fox />
+              </Ecctrl>
+              <RewardSpawner onCollect={handleCollect} />
+            </Physics>
+            <WelcomeText position={[3, 13, -7]} />
+
+            <Text
+              position={[3, 12, -5]}
+              fontSize={0.5}
+              color="black"
+              anchorX="center"
+              anchorY="middle"
+              outlineWidth={0.05}
+              outlineColor="white"
+              depthOffset={1}
+              
+            >
+              Necesitas la ayuda de otro jugador {"\n"}
+              para llegar hasta el final del{"\n"}
+              juego
+            </Text>
+
+            <Controls />
+          </Suspense>
+        </Canvas>
+      </KeyboardControls>
+      <RewardCounterDisplay rewardCounters={rewardCounters} />
+      {/* Control de volumen */}
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          zIndex: "9999",
+        }}
+      >
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={handleVolumeChange}
+          disabled={!userInteracted}
+        />
+      </div>
+      {/* Boton para iniciar la reprodución del audio */}
+      <button
+        onClick={playAudio}
+        style={{
+          position: "absolute",
+          top: "50px",
+          right: "10px",
+          zIndex: "9999",
+        }}
+        disabled={userInteracted}
+      >
+        Reproducir audio
+      </button>
+
+      {/* Boton para detener la reproducción del audio */}
+      <button
+        onClick={muteAudio}
+        style={{
+          position: "absolute",
+          top: "80px",
+          right: "10px",
+          zIndex: "9999",
+        }}
+      >
+        Detener audio
+      </button>
+    </>
+  );
 }
-
-
-
-
-

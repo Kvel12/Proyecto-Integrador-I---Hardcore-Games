@@ -21,7 +21,7 @@ const WelcomeText = (props) => {
                 bevelThickness={0.01}
                 height={0.1}
                 letterSpacing={0.05}
-                size={0.2}
+                size={0.5}
             >
                 <meshNormalMaterial />
                 {text}
