@@ -21,6 +21,8 @@ import { useFox } from "../../context/FoxContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Level4() {
+
+  const [showInstructions, setShowInstructions] = useState(false);
   const map = useMovements();
   const audioRef = useRef(new Audio("./assets/sounds/mundoDuendes.mp3"));
   const [userInteracted, setUserInteracted] = useState(false);
@@ -281,6 +283,52 @@ export default function Level4() {
       >
         Detener audio
       </button>
+       {/* Boton para  las instruciones del juego   */}
+      <button
+  onClick={() => setShowInstructions(true)}
+  style={{
+    position: "absolute",
+    top: "110px",
+    right: "10px",
+    zIndex: "9999",
+  }}
+>
+  Mostrar Instrucciones
+</button>
+ {/* Cuadro de instrucciones */}
+
+{showInstructions && (
+  <div
+    style={{
+      position: "absolute",
+      top: "20%",
+      left: "50%",
+      transform: "translate(-50%, -20%)",
+      padding: "20px",
+      backgroundColor: "rgba(255, 255, 255, 0.9)",
+      borderRadius: "10px",
+      boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+      zIndex: "10000",
+      width: "300px",
+      textAlign: "center",
+    }}
+  >
+    <h2>Instrucciones del Juego</h2>
+    <p>
+      1. Utiliza las teclas de flechas o WASD para moverte.
+    </p>
+    <p>
+      2. Recoge objetos para obtener poderes especiales.
+    </p>
+    <p>
+      3. Evita los obstáculos y enemigos.
+    </p>
+    <p>
+      4. ¡Colabora con otro jugador para completar el nivel!
+    </p>
+    <button onClick={() => setShowInstructions(false)}>Cerrar</button>
+  </div>
+)}
     </>
   );
 }
