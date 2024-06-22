@@ -21,9 +21,11 @@ import HealthBar from "../../components/HealthBar";
 import { useFox } from "../../context/FoxContext";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../../socket/socket-manager";
+import { Evil_Warrior } from "./evilWarrior";
 
 
 export default function Level4() {
+    const [showInstructions, setShowInstructions] = useState(false);
     const map = useMovements();
     const audioRef = useRef(new Audio("./assets/sounds/mundoDuendes.mp3"));
     const [userInteracted, setUserInteracted] = useState(false);
@@ -32,7 +34,7 @@ export default function Level4() {
     const maxLives = 5;
     const [showGlow, setShowGlow] = useState(false);
     const navigate = useNavigate();
-    const {setIsInvisible} = useFox();
+    const { setIsInvisible, activatePower } = useFox();
     const audioDerrota = new Audio("./assets/sounds/derrota.mp3");
     const [volume, setVolume] = useState(0.5);
     const [showPlatform5, setShowPlatform5] = useState(false);
@@ -40,7 +42,7 @@ export default function Level4() {
     
 
     useEffect(() => {
-      console.log("Socket connected:", socket.connected);  // Añade este log
+      console.log("Socket connected:", socket.connected); 
     
       if (!socket.connected) {
         socket.connect();
@@ -69,22 +71,40 @@ export default function Level4() {
 
     const [platformStates, setPlatformStates] = useState({
       platform5: false,
-      rest: false
+      rest: false,
+    });
+    const [appleVisibility, setAppleVisibility] = useState({
+      apple1: true,
+      apple2: true,
+    });
+    const [keyVisibility, setKeyVisibility] = useState({
+      Key1: true,
+      Key2: true,
+    });
+    const [starVisibility, setStartVisibility] = useState({
+      Start1: true,
+      Start2: true,
+      Start3: true,
     });
     
     useEffect(() => {
-      console.log("Setting up socket listener for update-platforms");  // Añade este log
-    
-      const handleUpdatePlatforms = (newStates) => {
-        console.log("Received update-platforms:", newStates);  // Añade este log
-        setPlatformStates(newStates);
-      };
-    
-      socket.on('update-platforms', handleUpdatePlatforms);
-    
+      socket.on('update-game-state', (newState) => {
+        setPlatformStates(newState.platforms);
+        setKeyVisibility(newState.keys);
+        setAppleVisibility(newState.apples);
+        setStartVisibility(newState.stars);
+      });
+  
+      socket.on('game-state', (initialState) => {
+        setPlatformStates(initialState.platforms);
+        setKeyVisibility(initialState.keys);
+        setAppleVisibility(initialState.apples);
+        setStartVisibility(initialState.stars);
+      });
+  
       return () => {
-        console.log("Cleaning up socket listener for update-platforms");  // Añade este log
-        socket.off('update-platforms', handleUpdatePlatforms);
+        socket.off('update-game-state');
+        socket.off('game-state');
       };
     }, []);
 
@@ -109,27 +129,35 @@ export default function Level4() {
       };
 
       const handleCollision = (e) => {
-        console.log("Collision detected with:", e.rigidBodyObject.name);  // Añade este log
-      
-        if(e.rigidBodyObject.name === 'Key1'){
-          console.log("Emitting unlock-platform for platform5");  // Añade este log
-          socket.emit('unlock-platform', 'platform5');
+        if (e.rigidBodyObject.name === "Key1" || e.rigidBodyObject.name === "Key2") {
+          socket.emit('unlock-platform', e.rigidBodyObject.name);
         }
-        if(e.rigidBodyObject.name === 'Key2'){
-          console.log("Emitting unlock-platform for rest");  // Añade este log
-          socket.emit('unlock-platform', 'rest');
-        }
-        if(e.rigidBodyObject.name === 'cactus'){
+        if (e.rigidBodyObject.name === 'Evil') {
           decreaseLives();
         }
-        if(e.rigidBodyObject.name === 'apple'){
-          if(lives < maxLives){
+        if (e.rigidBodyObject.name === "cactus") {
+          decreaseLives();
+        }
+        if (e.rigidBodyObject.name === "Start1" || e.rigidBodyObject.name === "Start2" || e.rigidBodyObject.name === "Start3") {
+          activatePower();
+          socket.emit('collect-star', e.rigidBodyObject.name);
+        }
+        if (e.rigidBodyObject.name === "apple1" || e.rigidBodyObject.name === "apple2") {
+          if (lives < maxLives) {
             setLives((prevLives) => prevLives + 1);
-          }else{
-            console.log("Vida completa");
+          }
+          socket.emit('collect-apple', e.rigidBodyObject.name);
+        }
+        if (e.rigidBodyObject.name === "plano") {
+          if (lives > 0) {
+            setLives(0);
+            audioDerrota.play();
+            setTimeout(() => {
+              window.location.reload();
+            }, 3500);
           }
         }
-      }
+      };
 
     useEffect(() => {
     const audio = audioRef.current;
@@ -182,18 +210,8 @@ export default function Level4() {
                 keyVisibility={keyVisibility}
                 starVisibility={starVisibility}
               />
-              <Ecctrl
-                camInitDis={-5}
-                camMaxDis={-5}
-                maxVelLimit={4}
-                jumpVel={7}
-                position={[0, 20, 0]}
-                rotation={[0, Math.PI / 2, 0]}
-                name="Fox"
-                onCollisionEnter={handleCollision}
-              >
-                <Fox />
-              </Ecctrl>
+              <Player1 onCollisionEnter={handleCollision}/>
+              <Player1 onCollisionEnter={handleCollision}/>
               <RewardSpawner onCollect={handleCollect} />
               <Evil_Warrior rotation={[0, Math.PI/2, 0]}/>
               <Evil_Warrior position={[2,10.8,4]}/>
