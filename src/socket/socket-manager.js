@@ -8,4 +8,4 @@ const urlDeployServer = "https://proyecto-integradori-hardcore-games.onrender.co
 /**
  * Socket connection
  */
-export const socket = socketIOClient(urlLocalServer);
+export const socket = socketIOClient(urlDeployServer);
