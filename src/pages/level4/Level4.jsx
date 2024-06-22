@@ -20,6 +20,7 @@ import RewardCounterDisplay from "./characters/rewards/RewardCountDisplay";
 import HealthBar from "../../components/HealthBar";
 import { useFox } from "../../context/FoxContext";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../../socket/socket-manager";
 
 
 export default function Level4() {
@@ -38,6 +39,18 @@ export default function Level4() {
     const [showRest, setShowRest] = useState(false);
     
 
+    useEffect(() => {
+      console.log("Socket connected:", socket.connected);  // Añade este log
+    
+      if (!socket.connected) {
+        socket.connect();
+      }
+    
+      return () => {
+        socket.disconnect();
+      };
+    }, []);
+    
 
     const decreaseLives = () => {
       if (lives > 0) {
@@ -53,6 +66,28 @@ export default function Level4() {
         });
       }
     };
+
+    const [platformStates, setPlatformStates] = useState({
+      platform5: false,
+      rest: false
+    });
+    
+    useEffect(() => {
+      console.log("Setting up socket listener for update-platforms");  // Añade este log
+    
+      const handleUpdatePlatforms = (newStates) => {
+        console.log("Received update-platforms:", newStates);  // Añade este log
+        setPlatformStates(newStates);
+      };
+    
+      socket.on('update-platforms', handleUpdatePlatforms);
+    
+      return () => {
+        console.log("Cleaning up socket listener for update-platforms");  // Añade este log
+        socket.off('update-platforms', handleUpdatePlatforms);
+      };
+    }, []);
+
 
     const handleCollect = (item) => {
         console.log(`Collected ${item.name}`);
@@ -74,11 +109,15 @@ export default function Level4() {
       };
 
       const handleCollision = (e) => {
+        console.log("Collision detected with:", e.rigidBodyObject.name);  // Añade este log
+      
         if(e.rigidBodyObject.name === 'Key1'){
-          setShowPlatform5(true);
+          console.log("Emitting unlock-platform for platform5");  // Añade este log
+          socket.emit('unlock-platform', 'platform5');
         }
         if(e.rigidBodyObject.name === 'Key2'){
-          setShowRest(true);
+          console.log("Emitting unlock-platform for rest");  // Añade este log
+          socket.emit('unlock-platform', 'rest');
         }
         if(e.rigidBodyObject.name === 'cactus'){
           decreaseLives();
@@ -136,7 +175,7 @@ export default function Level4() {
             <Perf position="top-left" />
             <Suspense fallback={null}>
                 <Physics debug={false}>
-                    <World showPlatform5={showPlatform5} showRest={showRest}/>
+                    <World showPlatform5={platformStates.platform5} showRest={platformStates.rest}/>
                     <Player1 onCollisionEnter={handleCollision} />
                     <Player2 onCollisionEnter={handleCollision} />
                     <RewardSpawner onCollect={handleCollect}/>
