@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { RigidBody } from '@react-three/rapier'
 
-export default function Model({showPlatform5, showRest}) {
+export default function Model({showPlatform5, showRest, appleVisibility, keyVisibility, starVisibility}) {
   const { nodes, materials } = useGLTF('/assets/models/world/Level4-1.glb')
   return (
     <group dispose={null}>
@@ -467,6 +467,7 @@ export default function Model({showPlatform5, showRest}) {
             />
           </group>
         </group>
+        {keyVisibility.Key1 && (
         <RigidBody name='Key1' type='fixed'>
         <group name="Key1">
           <group name="key002">
@@ -478,6 +479,8 @@ export default function Model({showPlatform5, showRest}) {
           </group>
         </group>
         </RigidBody>
+        )}
+        {keyVisibility.Key2 && (
         <RigidBody name='Key2' type='fixed'>
         <group name="Key2">
           <group name="key003">
@@ -489,6 +492,7 @@ export default function Model({showPlatform5, showRest}) {
           </group>
         </group>
         </RigidBody>
+        )}
         <RigidBody name='cactus' type='fixed'>
         <group name="Cactus1">
           <group name="cactus_02001" />
@@ -686,6 +690,8 @@ export default function Model({showPlatform5, showRest}) {
             />
           </group>
         </group>
+        {starVisibility.Start1 && (
+        <RigidBody name='Start1' type='fixed'>
         <group name="Star1">
           <group name="star001">
             <mesh
@@ -695,6 +701,10 @@ export default function Model({showPlatform5, showRest}) {
             />
           </group>
         </group>
+        </RigidBody>
+        )}
+        {starVisibility.Start2 && (
+        <RigidBody name='Start2' type='fixed'>
         <group name="Star2">
           <group name="star002">
             <mesh
@@ -704,6 +714,10 @@ export default function Model({showPlatform5, showRest}) {
             />
           </group>
         </group>
+        </RigidBody>
+        )}
+        {starVisibility.Start3 && (
+        <RigidBody name='Start3' type='fixed'>
         <group name="Star3">
           <group name="star003">
             <mesh
@@ -713,6 +727,8 @@ export default function Model({showPlatform5, showRest}) {
             />
           </group>
         </group>
+        </RigidBody>
+        )}
         <group name="Sign3">
           <group name="sign_direction003">
             <mesh
@@ -768,7 +784,8 @@ export default function Model({showPlatform5, showRest}) {
           />
         </group>
         </RigidBody>
-        <RigidBody name='apple' type='fixed'>
+        {appleVisibility.apple1 && (
+        <RigidBody name='apple1' type='fixed'>
         <group name="Apple1">
           <mesh
             name="fruit_toon_material_0001"
@@ -776,6 +793,10 @@ export default function Model({showPlatform5, showRest}) {
             material={materials['toon_material.071']}
           />
         </group>
+        </RigidBody>
+        )}
+        {appleVisibility.apple2 && (
+        <RigidBody name='apple2' type='fixed'>
         <group name="Apple2">
           <mesh
             name="fruit_toon_material_0002"
@@ -784,7 +805,8 @@ export default function Model({showPlatform5, showRest}) {
           />
         </group>
         </RigidBody>
-        <RigidBody colliders="trimesh" type="fixed">
+        )}
+        <RigidBody colliders="trimesh" type="fixed" name='plano'>
         <mesh name="Plane" geometry={nodes.Plane.geometry} material={materials.Transparent} />
         </RigidBody>
       </group>

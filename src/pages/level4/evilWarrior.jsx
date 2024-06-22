@@ -35,7 +35,7 @@ export function Evil_Warrior(props) {
 
     
     return (
-      <group ref={group} position={[22,13,-5]}{...props} dispose={null}>
+      <group ref={group} position={[22,13,-3]}{...props} dispose={null}>
         <RigidBody name='Evil' type='fixed'>
         <group name="Sketchfab_Scene" visible={visible}>
           <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>

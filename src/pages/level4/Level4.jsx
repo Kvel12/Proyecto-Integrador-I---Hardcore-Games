@@ -1,5 +1,5 @@
 import { Perf } from "r3f-perf";
-import { KeyboardControls, OrbitControls } from "@react-three/drei";
+import { KeyboardControls, OrbitControls, Text } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Suspense, useState, useEffect, useRef } from "react";
 import Fox from "./characters/fox/Fox";
@@ -89,20 +89,26 @@ export default function Level4() {
     
     useEffect(() => {
       socket.on('update-game-state', (newState) => {
+        console.log("Received updated game state:", newState);
         setPlatformStates(newState.platforms);
         setKeyVisibility(newState.keys);
         setAppleVisibility(newState.apples);
-        setStartVisibility(newState.stars);
+        setStartVisibility(prevState => {
+          console.log("Updating star visibility:", newState.stars);
+          return newState.stars;
+        });
       });
-  
+    
       socket.on('game-state', (initialState) => {
+        console.log("Received initial game state:", initialState);
         setPlatformStates(initialState.platforms);
         setKeyVisibility(initialState.keys);
         setAppleVisibility(initialState.apples);
         setStartVisibility(initialState.stars);
       });
-  
+    
       return () => {
+        console.log("Cleaning up socket listeners");
         socket.off('update-game-state');
         socket.off('game-state');
       };
@@ -129,7 +135,10 @@ export default function Level4() {
       };
 
       const handleCollision = (e) => {
+        console.log("Collision detected with:", e.rigidBodyObject.name);
+      
         if (e.rigidBodyObject.name === "Key1" || e.rigidBodyObject.name === "Key2") {
+          console.log("Emitting unlock-platform for:", e.rigidBodyObject.name);
           socket.emit('unlock-platform', e.rigidBodyObject.name);
         }
         if (e.rigidBodyObject.name === 'Evil') {
@@ -139,6 +148,7 @@ export default function Level4() {
           decreaseLives();
         }
         if (e.rigidBodyObject.name === "Start1" || e.rigidBodyObject.name === "Start2" || e.rigidBodyObject.name === "Start3") {
+          console.log("Emitting collect-star for:", e.rigidBodyObject.name);
           activatePower();
           socket.emit('collect-star', e.rigidBodyObject.name);
         }
@@ -146,6 +156,7 @@ export default function Level4() {
           if (lives < maxLives) {
             setLives((prevLives) => prevLives + 1);
           }
+          console.log("Emitting collect-apple for:", e.rigidBodyObject.name);
           socket.emit('collect-apple', e.rigidBodyObject.name);
         }
         if (e.rigidBodyObject.name === "plano") {
@@ -204,17 +215,16 @@ export default function Level4() {
           <Suspense fallback={null}>
             <Physics debug={false}>
               <World
-                showPlatform5={showPlatform5}
-                showRest={showRest}
+                showPlatform5={platformStates.platform5}
+                showRest={platformStates.rest}
                 appleVisibility={appleVisibility}
                 keyVisibility={keyVisibility}
                 starVisibility={starVisibility}
               />
               <Player1 onCollisionEnter={handleCollision}/>
-              <Player1 onCollisionEnter={handleCollision}/>
+              <Player2 onCollisionEnter={handleCollision}/>
               <RewardSpawner onCollect={handleCollect} />
-              <Evil_Warrior rotation={[0, Math.PI/2, 0]}/>
-              <Evil_Warrior position={[2,10.8,4]}/>
+              <Evil_Warrior position={[2, 10.8, 4]}/>
             </Physics>
             <WelcomeText position={[3, 13, -7]} />
 
