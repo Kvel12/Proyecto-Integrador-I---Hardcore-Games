@@ -438,7 +438,7 @@ export default function Model({showPlatform5, showRest, appleVisibility, keyVisi
             />
           </group>
         </group>
-        <RigidBody colliders="trimesh" type="fixed">
+        <RigidBody name='flag' type="fixed">
         <group name="Flagpole">
           <group name="checkpoint002">
             <mesh

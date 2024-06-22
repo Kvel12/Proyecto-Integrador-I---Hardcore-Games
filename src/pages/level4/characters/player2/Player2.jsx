@@ -41,7 +41,7 @@ export default function Player2({ onCollisionEnter }) {
       onCollisionEnter={onCollisionEnter}
     >
       <mesh ref={player2Ref}>
-        <sphereGeometry args={[1, 16, 16]} />
+        <sphereGeometry args={[0.5, 16, 16]} />
         <meshPhongMaterial color={0x960056} />
       </mesh>
     </RigidBody>
