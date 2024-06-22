@@ -171,72 +171,7 @@ export default function Level4() {
     setVolume(newVolume);
     audioRef.current.volume = newVolume;
   };
-
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-    return (
-        <>
-        <KeyboardControls map={map}>
-            <div>
-                <HealthBar lives={lives} maxLives={maxLives} />
-            </div>
-            
-            <Canvas camera={{ position: [0, 2, 0] }}>
-            <Lights />
-            <Environments />
-            <Perf position="top-left" />
-            <Suspense fallback={null}>
-                <Physics debug={false}>
-                    <World 
-                      showPlatform5={showPlatform5} 
-                      showRest={showRest}
-                      appleVisibility={appleVisibility}
-                      keyVisibility={keyVisibility}
-                      starVisibility={starVisibility}
-                      />
-                    <Ecctrl
-                        camInitDis={-5}
-                        camMaxDis={-5}
-                        maxVelLimit={4}
-                        jumpVel={7}
-                        position={[0, 20, 0]}
-                        rotation={[0, Math.PI/2, 0]}
-                        name="Fox"
-                        onCollisionEnter={handleCollision}
-                    >
-                        <Fox/>
-                    </Ecctrl>
-                    <RewardSpawner onCollect={handleCollect}/>
-                    <Evil_Warrior/>
-                    <Evil_Warrior position={[2,10.8,4]}/>
-                </Physics>
-                <WelcomeText position={[1.2, 1.5, -38]}/>
-                <Controls/>
-                </Suspense>
-                </Canvas>   
-            </KeyboardControls>
-            <RewardCounterDisplay rewardCounters={rewardCounters}/>
-        {/* Control de volumen */}
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            zIndex: "9999",
-          }}
-        >
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-            disabled={!userInteracted}
-          />
-=======
->>>>>>> Stashed changes
+  
   const playAudio = () => {
     setUserInteracted(true);
   };
@@ -252,10 +187,6 @@ export default function Level4() {
       <KeyboardControls map={map}>
         <div>
           <HealthBar lives={lives} maxLives={maxLives} />
-<<<<<<< Updated upstream
-=======
->>>>>>> b668cc7496bb46d1d3dd8088d84e5736d0dc43f6
->>>>>>> Stashed changes
         </div>
 
         <Canvas camera={{ position: [0, 2, 0] }}>
@@ -284,6 +215,8 @@ export default function Level4() {
                 <Fox />
               </Ecctrl>
               <RewardSpawner onCollect={handleCollect} />
+              <Evil_Warrior/>
+              <Evil_Warrior position={[2,10.8,4]}/>
             </Physics>
             <WelcomeText position={[3, 13, -7]} />
 
