@@ -39,7 +39,7 @@ export function Evil_Warrior(props) {
         <RigidBody name='Evil' type='fixed'>
         <group name="Sketchfab_Scene" visible={visible}>
           <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]}>
-            <group name="15fdb51d4b264f24933c18cf6430ddacfbx" rotation={[Math.PI / 2, 0, 0]}>
+            <group name="15fdb51d4b264f24933c18cf6430ddacfbx" rotation={[Math.PI / 2, Math.PI, 0]}>
               <group name="Object_2">
                 <group name="RootNode">
                   <group name="Evil_Warrior_Mesh_Base">

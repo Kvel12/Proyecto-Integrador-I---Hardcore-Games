@@ -93,6 +93,9 @@ export default function Level4() {
         [e.rigidBodyObject.name]: false,
       }));
     }
+    if(e.rigidBodyObject.name === 'Evil'){
+      decreaseLives();
+    }
     if (e.rigidBodyObject.name === "Key2") {
       setShowRest(true);
       setKeyVisibility((prevVisibility) => ({
@@ -171,7 +174,7 @@ export default function Level4() {
     setVolume(newVolume);
     audioRef.current.volume = newVolume;
   };
-  
+
   const playAudio = () => {
     setUserInteracted(true);
   };
@@ -215,7 +218,7 @@ export default function Level4() {
                 <Fox />
               </Ecctrl>
               <RewardSpawner onCollect={handleCollect} />
-              <Evil_Warrior/>
+              <Evil_Warrior rotation={[0, Math.PI/2, 0]}/>
               <Evil_Warrior position={[2,10.8,4]}/>
             </Physics>
             <WelcomeText position={[3, 13, -7]} />
