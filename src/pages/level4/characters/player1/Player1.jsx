@@ -23,10 +23,10 @@ export default function Player1({ onCollisionEnter }) {
   // useFrame hook to handle per-frame updates
   useFrame(() => {
     // Get current keyboard input states
-    const { forward, backward, leftward, rightward } = get();
+    const { forward, backward, leftward, rightward, jump, run } = get();
 
     // If any movement key is pressed, emit the player's movement data to the server
-    if (forward || backward || leftward || rightward) {
+    if (forward || backward || leftward || rightward || jump || run) {
       window.setTimeout(() => {
         socket.emit("player-moving", {
           translation: rbPlayer1Ref.current?.translation(),

@@ -38,11 +38,10 @@ export default function Player2({ onCollisionEnter }) {
       ref={rbPlayer2Ref}
       position={[0, 12, -3]}
       colliders={false}
-      name="Player2"
       onCollisionEnter={onCollisionEnter}
     >
       <mesh ref={player2Ref}>
-        <sphereGeometry args={[1, 64, 64]} />
+        <sphereGeometry args={[1, 16, 16]} />
         <meshPhongMaterial color={0x960056} />
       </mesh>
     </RigidBody>

@@ -20,7 +20,7 @@ import RewardCounterDisplay from "./characters/rewards/RewardCountDisplay";
 import HealthBar from "../../components/HealthBar";
 import { useFox } from "../../context/FoxContext";
 import { useNavigate } from "react-router-dom";
-import App from "./App";
+
 
 export default function Level4() {
     const map = useMovements();
