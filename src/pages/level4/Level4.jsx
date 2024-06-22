@@ -27,7 +27,7 @@ import { Evil_Warrior } from "./evilWarrior";
 export default function Level4() {
     const [showInstructions, setShowInstructions] = useState(false);
     const map = useMovements();
-    const audioRef = useRef(new Audio("./assets/sounds/CastilloAudio.mp3"));
+    const audioRef = useRef(new Audio("./assets/sounds/mundoDuendes.mp3"));
     const [userInteracted, setUserInteracted] = useState(false);
     const [rewardCounters, setRewardCounters] = useState([]);
     const [lives, setLives] = useState(5);
@@ -232,7 +232,7 @@ export default function Level4() {
                 <Evil_Warrior position={[2, 10.8, 4]} />
               </Physics>
               <WelcomeText position={[3, 13, -7]} />
-              <WinText visible={flagTouched} position={[60, 14, -7]} rotation={[0, 0 , 0]} /> {/* Modificar WinText para aceptar una prop visible y rotación */}
+              <WinText visible={flagTouched} position={[60, 14, -3]} rotation={[0, 0 , 0]} /> {/* Modificar WinText para aceptar una prop visible y rotación */}
               <Text
                 position={[3, 12, -5]}
                 fontSize={0.5}
