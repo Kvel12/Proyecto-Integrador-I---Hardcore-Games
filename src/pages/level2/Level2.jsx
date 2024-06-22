@@ -100,7 +100,6 @@ export default function Level2() {
         <Level2Background />
         <Canvas camera={{ position: [0, 2, 0] }}>
           <Lights />
-          <Perf position="top-left" />
           <Suspense fallback={null}>
             <Physics debug={false}>
               <World2 />

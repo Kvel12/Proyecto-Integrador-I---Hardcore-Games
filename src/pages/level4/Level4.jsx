@@ -216,7 +216,6 @@ export default function Level4() {
           <Canvas camera={{ position: [0, 2, 0] }}>
             <Lights />
             <Environments />
-            <Perf position="top-left" />
             <Suspense fallback={null}>
               <Physics debug={false}>
                 <World

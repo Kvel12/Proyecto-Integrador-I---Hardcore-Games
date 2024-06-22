@@ -132,7 +132,6 @@ const toggleInstructions = () => {
               position: [0, 1, 0],
             }}
           >
-            <Perf position="top-left" />
             <Suspense fallback={null}>
               <Lights />
               <Environments />
